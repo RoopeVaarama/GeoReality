@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name" translatable="false">GeoReality</string>
     <string name="burger_menu_title">Open drawer</string>
+    <string name="nav_menu_item_map">Map</string>
+    <string name="nav_menu_item_cache">My caches</string>
+    <string name="nav_menu_item_create_cache">Create new cache</string>
+    <string name="nav_menu_title">Placeholder menu</string>
 </resources>

@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">GeoReality</string>
     <string name="burger_menu_title">Avaa menu</string>
+    <string name="nav_menu_item_map">Kartta</string>
+    <string name="nav_menu_item_cache">Minun kätköt</string>
+    <string name="nav_menu_item_create_cache">Luo uusi kätkö</string>
+    <string name="nav_menu_title">Paikka menu</string>
 </resources>
