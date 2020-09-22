@@ -1,3 +1,3 @@
 # GeoReality
 
-#School project made with Topias Peiponen
+School project made with Topias Peiponen
