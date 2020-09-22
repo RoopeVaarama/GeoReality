@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">GeoReality</string>
+    <string name="app_name" translatable="false">GeoReality</string>
+    <string name="burger_menu_title">Open drawer</string>
 </resources>
