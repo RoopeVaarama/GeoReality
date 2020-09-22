@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.google.android.gms.maps.OnMapReadyCallback
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setupNav()
 
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(this)
     }
 
     /**
