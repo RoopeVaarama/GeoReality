@@ -44,11 +44,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mAuth = FirebaseAuth.getInstance()
         user = mAuth.currentUser
         if (!userIsLoggedIn()) {
-            // Choose authentication providers
-            providers = arrayListOf(
-                AuthUI.IdpConfig.EmailBuilder().build(),
-                AuthUI.IdpConfig.AnonymousBuilder().build()
-            )
             showSignInOptions()
         } else {
             Log.d("User", user!!.email!!)
@@ -65,6 +60,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun showSignInOptions() {
+        providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.AnonymousBuilder().build()
+        )
         // Create and launch sign-in intent
         startActivityForResult(
             AuthUI.getInstance()
@@ -94,6 +93,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigation.setNavigationItemSelectedListener(this)
     }
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        Log.d("Item", item.toString())
+        when (item.toString()) {
+            "Map" -> Log.d("Pressed", item.toString())
+            "My caches" -> Log.d("Pressed", item.toString())
+            "Create new cache" -> Log.d("Pressed", item.toString())
+            "Logout" -> {
+                mAuth.signOut()
+                showSignInOptions()
+            }
+        }
         return false
     }
     /**

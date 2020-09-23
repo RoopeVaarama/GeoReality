@@ -9,4 +9,5 @@
     <string name="login_email_button">Kirjaudu sisään sähköpostilla</string>
     <string name="login_anon_button">Kirjaudu sisään vieraana</string>
     <string name="login_signup_button">Rekisteröidy</string>
+    <string name="nav_menu_item_logout">Logout</string>
 </resources>
