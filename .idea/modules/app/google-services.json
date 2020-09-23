@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "66252458467",
+    "firebase_url": "https://georeality-a9e74.firebaseio.com",
+    "project_id": "georeality-a9e74",
+    "storage_bucket": "georeality-a9e74.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66252458467:android:e6c29041d59f105eae38d6",
+        "android_client_info": {
+          "package_name": "com.example.georeality"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66252458467-jlkps6sh0ab4plft7insnm5mi54osbfv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.georeality",
+            "certificate_hash": "ac63786e7c253332bae828e953695f84a323230a"
+          }
+        },
+        {
+          "client_id": "66252458467-md8uis78n6125m182v397vjnaufdjv3j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTV1w1PXLx3YSqp425Br0HuZE4sBnaAXA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66252458467-md8uis78n6125m182v397vjnaufdjv3j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

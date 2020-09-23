@@ -6,4 +6,7 @@
     <string name="nav_menu_item_cache">Minun kätköt</string>
     <string name="nav_menu_item_create_cache">Luo uusi kätkö</string>
     <string name="nav_menu_title">Paikka menu</string>
+    <string name="login_email_button">Kirjaudu sisään sähköpostilla</string>
+    <string name="login_anon_button">Kirjaudu sisään vieraana</string>
+    <string name="login_signup_button">Rekisteröidy</string>
 </resources>

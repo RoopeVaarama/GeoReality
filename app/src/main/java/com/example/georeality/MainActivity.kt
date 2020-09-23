@@ -9,12 +9,16 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import android.Manifest
 import android.location.Location
+import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.maps.OnMapReadyCallback
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -23,17 +27,52 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 
 /**
- * MainActivity is the base activity, which contains the navigation and map functionality
+ * MainActivity is the base activity, which contains the top navigation and map functionality
  */
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener, OnMapReadyCallback {
+    private lateinit var mAuth : FirebaseAuth
     private lateinit var map: GoogleMap
+    private lateinit var providers : List<AuthUI.IdpConfig>
+    private var user : FirebaseUser? = null
+    private val REQUEST_CODE = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupNav()
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(this)
+        //Check if user is logged in, if not then go to login screen
+        mAuth = FirebaseAuth.getInstance()
+        user = mAuth.currentUser
+        if (!userIsLoggedIn()) {
+            // Choose authentication providers
+            providers = arrayListOf(
+                AuthUI.IdpConfig.EmailBuilder().build(),
+                AuthUI.IdpConfig.AnonymousBuilder().build()
+            )
+            showSignInOptions()
+        } else {
+            Log.d("User", user!!.email!!)
+            setupNav()
+
+            val mapFragment =
+                supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+            mapFragment?.getMapAsync(this)
+        }
+    }
+
+    private fun userIsLoggedIn() : Boolean {
+        return user != null
+    }
+
+    private fun showSignInOptions() {
+        // Create and launch sign-in intent
+        startActivityForResult(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setTheme(R.style.LoginTheme)
+                .build(),
+            REQUEST_CODE)
     }
 
     /**

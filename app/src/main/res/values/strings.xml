@@ -5,4 +5,7 @@
     <string name="nav_menu_item_cache">My caches</string>
     <string name="nav_menu_item_create_cache">Create new cache</string>
     <string name="nav_menu_title">Placeholder menu</string>
+    <string name="login_email_button">Sign-in with email</string>
+    <string name="login_anon_button">Login as a guest</string>
+    <string name="login_signup_button">Sign-up</string>
 </resources>
