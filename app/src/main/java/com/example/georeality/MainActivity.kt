@@ -8,14 +8,21 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import android.Manifest
+import android.annotation.SuppressLint
 import android.location.Location
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.maps.OnMapReadyCallback
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -35,10 +42,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var providers : List<AuthUI.IdpConfig>
     private var user : FirebaseUser? = null
     private val REQUEST_CODE = 1
+    private  lateinit var lastLocation: Location
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fab.setOnClickListener(fabClickListener)
 
         //Check if user is logged in, if not then go to login screen
         mAuth = FirebaseAuth.getInstance()
@@ -115,6 +128,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         googleMap.setOnMyLocationButtonClickListener(this)
         googleMap.setOnMyLocationClickListener(this)
         enableMyLocation()
+        
     }
 
     //Enables My Location layer if the fine location permission has been granted.
@@ -138,6 +152,37 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 )
             }
         }
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+            if (location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+            }
+        }
+    }
+
+    //Fab listener for adding markers and entitys
+    @SuppressLint("MissingPermission")
+    private val fabClickListener = View.OnClickListener {
+        fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
+            if (location != null) {
+                lastLocation = location
+                val currentLatLng = LatLng(location.latitude, location.longitude)
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+            }
+            Toast.makeText(
+                this,
+                "Current location:${lastLocation.latitude} ${lastLocation.longitude}",
+                Toast.LENGTH_LONG
+            ).show()
+
+
+            map.addMarker(
+                MarkerOptions()
+                    .position(LatLng(lastLocation.latitude, lastLocation.longitude))
+
+            )
+        }
     }
 
     override fun onMyLocationButtonClick(): Boolean {
@@ -149,5 +194,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onMyLocationClick(location: Location) {
         Toast.makeText(this, "Current locatin:\n$location", Toast.LENGTH_LONG).show()
+
     }
 }
