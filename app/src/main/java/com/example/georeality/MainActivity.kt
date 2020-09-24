@@ -160,6 +160,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    //Fab listener for adding markers and entitys
     @SuppressLint("MissingPermission")
     private val fabClickListener = View.OnClickListener {
         fusedLocationClient.lastLocation.addOnSuccessListener(this) { location ->
