@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.location.Location
 import android.util.Log
 import android.widget.Toast
@@ -60,12 +61,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             showSignInOptions()
         } else {
             Log.d("User", user!!.email!!)
-            setupNav()
+        }
 
-            val mapFragment =
+        setupNav()
+        val mapFragment =
                 supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
             mapFragment?.getMapAsync(this)
-        }
+
     }
 
     private fun userIsLoggedIn() : Boolean {
@@ -160,6 +162,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+
     //Fab listener for adding markers and entitys
     @SuppressLint("MissingPermission")
     private val fabClickListener = View.OnClickListener {
@@ -175,15 +178,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.LENGTH_LONG
             ).show()
 
-
-            map.addMarker(
-                MarkerOptions()
-                    .position(LatLng(lastLocation.latitude, lastLocation.longitude))
-
-            )
+            val intent = Intent(this, EntityActivity::class.java).apply {
+                putExtra("latitude", lastLocation.latitude)
+                putExtra("longitude", lastLocation.longitude)
+            }
+            startActivity(intent)
         }
     }
 
+    private fun createEntity(location: Location){
+
+
+        Toast.makeText(this, "Current locatin:\n$location for new entity", Toast.LENGTH_LONG).show()
+        map.addMarker(
+            MarkerOptions()
+                .position(LatLng(location.latitude, location.longitude))
+                .title("Created by (current username)")
+
+        )
+
+
+    }
     override fun onMyLocationButtonClick(): Boolean {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_LONG).show()
         // Return false so that we don't consume the event and the default behavior still occurs
