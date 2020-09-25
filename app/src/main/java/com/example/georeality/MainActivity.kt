@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun switchToMapFragment() {
         fragmentTransaction = supportFragmentManager.beginTransaction()
         val mapFragment = MapFragment()
-        fragmentTransaction.replace(R.id.fragment_container, mapFragment)
+        fragmentTransaction.replace(R.id.nav_host_fragment, mapFragment)
         fragmentTransaction.commit()
     }
 
@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun switchToCreateCacheFragment() {
         fragmentTransaction = supportFragmentManager.beginTransaction()
         val entityFragment = CacheCreationFragment()
-        fragmentTransaction.replace(R.id.fragment_container, entityFragment)
+        fragmentTransaction.replace(R.id.nav_host_fragment, entityFragment)
         fragmentTransaction.commit()
     }
 
@@ -143,3 +143,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return false
     }
 }
+/*<fragment
+                    android:id="@+id/fragment_container"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:defaultNavHost="true"
+                    app:navGraph="@navigation/nav_graph" />
+
+ */

@@ -17,6 +17,8 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,6 +36,7 @@ import kotlinx.android.synthetic.main.fragment_map.*
 
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMyLocationClickListener, OnMapReadyCallback {
+    private lateinit var navController : NavController
     private  lateinit var lastLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var map : GoogleMap
@@ -54,7 +57,8 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fab.setOnClickListener(fabClickListener)
+        navController = Navigation.findNavController(view)
+        fab.setOnClickListener{navController.navigate(R.id.action_mapFragment_to_cacheCreationFragment)}
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -112,7 +116,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
             fragmentTransaction = childFragmentManager.beginTransaction()
             val mapFragment = MapFragment()
-            fragmentTransaction.replace(R.id.fragment_container, mapFragment)
+            //fragmentTransaction.replace(R.id.fragment_container, mapFragment)
             fragmentTransaction.commit()
             /*val intent = Intent(this, EntityActivity::class.java).apply {
                 putExtra("latitude", lastLocation.latitude)

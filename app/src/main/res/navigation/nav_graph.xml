@@ -2,17 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_gtap"
-    app:startDestination="@id/mainActivity">
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mapFragment">
 
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.example.georeality.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.georeality.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment_to_cacheCreationFragment"
+            app:destination="@id/cacheCreationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cacheCreationFragment"
+        android:name="com.example.georeality.CacheCreationFragment"
+        android:label="fargment_cache_creation"
+        tools:layout="@layout/fargment_cache_creation" >
+        <action
+            android:id="@+id/action_cacheCreationFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
 </navigation>
