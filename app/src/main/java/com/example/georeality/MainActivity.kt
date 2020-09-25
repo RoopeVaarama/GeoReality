@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     fun switchToCreateCacheFragment() {
         fragmentTransaction = supportFragmentManager.beginTransaction()
-        val entityFragment = EntityFragment()
+        val entityFragment = CacheCreationFragment()
         fragmentTransaction.replace(R.id.fragment_container, entityFragment)
         fragmentTransaction.commit()
     }
@@ -129,9 +129,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d("Item", item.toString())
         when (item.toString()) {
-            "Map" -> Log.d("Pressed", item.toString())
+            "Map" -> {
+                switchToMapFragment()
+                navigation.setCheckedItem(item)
+            }
             "My caches" -> Log.d("Pressed", item.toString())
-            "Create new cache" -> Log.d("Pressed", item.toString())
+            "Create new cache" -> switchToCreateCacheFragment()
             "Logout" -> {
                 mAuth.signOut()
                 showSignInOptions()
