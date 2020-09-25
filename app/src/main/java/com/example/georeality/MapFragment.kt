@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,6 +37,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     private  lateinit var lastLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var map : GoogleMap
+    private lateinit var fragmentTransaction: FragmentTransaction
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -108,6 +110,10 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 Toast.LENGTH_LONG
             ).show()
 
+            fragmentTransaction = childFragmentManager.beginTransaction()
+            val mapFragment = MapFragment()
+            fragmentTransaction.replace(R.id.fragment_container, mapFragment)
+            fragmentTransaction.commit()
             /*val intent = Intent(this, EntityActivity::class.java).apply {
                 putExtra("latitude", lastLocation.latitude)
                 putExtra("longitude", lastLocation.longitude)
