@@ -11,6 +11,8 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -27,16 +29,17 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var navController : NavController
     private lateinit var mAuth: FirebaseAuth
     private lateinit var providers: List<AuthUI.IdpConfig>
     private lateinit var fragmentTransaction: FragmentTransaction
     private var user: FirebaseUser? = null
     private val REQUEST_CODE = 1
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
         //Check if user is logged in, if not then go to login screen
         mAuth = FirebaseAuth.getInstance()
@@ -48,7 +51,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         setupNav()
         checkPermissions()
-        switchToMapFragment()
     }
 
     private fun checkPermissions() {
@@ -66,21 +68,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun switchToMapFragment() {
-        fragmentTransaction = supportFragmentManager.beginTransaction()
-        val mapFragment = MapFragment()
-        fragmentTransaction.replace(R.id.nav_host_fragment, mapFragment)
-        fragmentTransaction.commit()
+        navController.navigate(R.id.mapFragment)
     }
 
     private fun switchToUserCachesFragment() {
 
     }
 
-    fun switchToCreateCacheFragment() {
-        fragmentTransaction = supportFragmentManager.beginTransaction()
-        val entityFragment = CacheCreationFragment()
-        fragmentTransaction.replace(R.id.nav_host_fragment, entityFragment)
-        fragmentTransaction.commit()
+    private fun switchToCreateCacheFragment() {
+        navController.navigate(R.id.cacheCreationFragment)
     }
 
     private fun userIsLoggedIn(): Boolean {
