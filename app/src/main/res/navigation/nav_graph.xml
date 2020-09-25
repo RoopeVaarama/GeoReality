@@ -18,7 +18,7 @@
         android:id="@+id/cacheCreationFragment"
         android:name="com.example.georeality.CacheCreationFragment"
         android:label="fargment_cache_creation"
-        tools:layout="@layout/fargment_cache_creation" >
+        tools:layout="@layout/fragment_cache_creation" >
         <action
             android:id="@+id/action_cacheCreationFragment_to_mapFragment"
             app:destination="@id/mapFragment" />

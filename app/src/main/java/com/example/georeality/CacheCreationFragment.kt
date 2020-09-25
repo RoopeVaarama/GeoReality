@@ -15,6 +15,6 @@ class CacheCreationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fargment_cache_creation, container, false)
+        return inflater.inflate(R.layout.fragment_cache_creation, container, false)
     }
 }
