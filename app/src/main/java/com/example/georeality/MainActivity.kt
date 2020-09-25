@@ -76,8 +76,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private fun switchToCreateCacheFragment() {
-
+    fun switchToCreateCacheFragment() {
+        fragmentTransaction = supportFragmentManager.beginTransaction()
+        val entityFragment = EntityFragment()
+        fragmentTransaction.replace(R.id.fragment_container, entityFragment)
+        fragmentTransaction.commit()
     }
 
     private fun userIsLoggedIn(): Boolean {
