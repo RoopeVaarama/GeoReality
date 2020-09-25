@@ -11,4 +11,10 @@
     <string name="nav_menu_item_logout">Logout</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Title</string>
+    <string name="type">Type</string>
+    <string name="cache_type">Cache type</string>
+    <string name="create_a_new_cache">Create a new cache</string>
+    <string name="type_switch">Switch</string>
+    <string name="save">Save</string>
 </resources>
