@@ -40,7 +40,7 @@ class EntityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_entity, container, false)
+        val view = inflater.inflate(R.layout.fargment_cache_creation, container, false)
         val spinner: Spinner = view.findViewById(R.id.spinner)
         spinner.onItemSelectedListener = SpinnerActivity()
         //Crate an ArrayAdapter using the string array and a default spinner layout
