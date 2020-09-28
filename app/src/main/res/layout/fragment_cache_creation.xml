@@ -10,62 +10,94 @@
         android:id="@+id/saveButton"
         android:layout_width="378dp"
         android:layout_height="59dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="368dp"
         android:layout_marginBottom="16dp"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:text="@string/type_switch"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="134dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.003"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cacheView"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="365dp"
         android:layout_height="42dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="44dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="29dp"
         android:text="@string/create_a_new_cache"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/cacheView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.071"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="31dp" />
+        app:layout_constraintVertical_bias="0.486" />
 
     <TextView
         android:id="@+id/cacheView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="310dp"
         android:text="@string/cache_type"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="115dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.066"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.109" />
 
     <TextView
         android:id="@+id/typeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/type"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="245dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.349" />
 
     <EditText
         android:id="@+id/title_text_input"
         android:layout_width="358dp"
         android:layout_height="46dp"
+        android:layout_marginStart="16dp"
         android:ems="10"
         android:hint="@string/title"
         android:inputType="text"
-        tools:layout_editor_absoluteX="31dp"
-        tools:layout_editor_absoluteY="176dp" />
+        app:layout_constraintBottom_toTopOf="@+id/typeView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1"
+        app:layout_constraintVertical_bias="0.128" />
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="264dp" />
+        app:layout_constraintTop_toBottomOf="@+id/typeView"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
