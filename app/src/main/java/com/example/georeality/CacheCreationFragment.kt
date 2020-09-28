@@ -2,6 +2,7 @@ package com.example.georeality
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.media.*
 import android.os.Bundle
@@ -47,6 +48,8 @@ class CacheCreationFragment : Fragment() {
         val saveButton: Button = view.findViewById(R.id.saveButton)
         val recordButton: Button = view.findViewById(R.id.recordButton)
         var recording: Boolean = false
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        var location = sharedPref?.getString("locationData", "defaultLocation")
 
         typeSwitch.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
@@ -65,10 +68,11 @@ class CacheCreationFragment : Fragment() {
         }
 
         saveButton.setOnClickListener {
+
             val cacheType = typeSwitch.text.toString()
             val title = title_text_input.text
             val spinnerType = spinner.selectedItem.toString()
-            Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}, location:")
+            Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}, location: ${location}")
         }
 
         recordButton.setOnClickListener {

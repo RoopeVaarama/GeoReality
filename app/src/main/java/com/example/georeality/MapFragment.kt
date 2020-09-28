@@ -37,7 +37,7 @@ import kotlinx.android.synthetic.main.fragment_map.*
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMyLocationClickListener, OnMapReadyCallback {
     private lateinit var navController : NavController
-    private lateinit var lastLocation: Location
+    lateinit var lastLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var map : GoogleMap
     private lateinit var fragmentTransaction: FragmentTransaction
@@ -113,6 +113,11 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 "Current location:${lastLocation.latitude} ${lastLocation.longitude}",
                 Toast.LENGTH_LONG
             ).show()
+            val locationdata = LatLng(lastLocation.latitude, lastLocation.longitude)
+            val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+            var editor = sharedPref?.edit()
+            editor?.putString("locationData", locationdata.toString())
+            editor?.commit()
 
             navController = Navigation.findNavController(it)
             navController.navigate(R.id.action_mapFragment_to_cacheCreationFragment)
