@@ -47,7 +47,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!.applicationContext)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
 
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
@@ -72,25 +72,25 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     //Enables My Location layer if the fine location permission has been granted.
     private fun enableMyLocation() {
         if (!::map.isInitialized) return
-        if (ContextCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(requireActivity().applicationContext, Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED
         ) {
             map.isMyLocationEnabled = true
         } else {
             //Permission to access the location is missing. Show rationale and request permission
             if ((Build.VERSION.SDK_INT >= 26 && ContextCompat.checkSelfPermission(
-                    activity!!.applicationContext,
+                    requireActivity().applicationContext,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED)
             ) {
                 ActivityCompat.requestPermissions(
-                    activity!!,
+                    requireActivity(),
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     0
                 )
             }
         }
-        fusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
+        fusedLocationClient.lastLocation.addOnSuccessListener(requireActivity()) { location ->
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
@@ -102,14 +102,14 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     //Fab listener for adding markers and entitys
     @SuppressLint("MissingPermission")
     private val fabClickListener = View.OnClickListener {
-        fusedLocationClient.lastLocation.addOnSuccessListener(activity!!) { location ->
+        fusedLocationClient.lastLocation.addOnSuccessListener(requireActivity()) { location ->
             if (location != null) {
                 lastLocation = location
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
             Toast.makeText(
-                activity!!.applicationContext,
+                requireActivity().applicationContext,
                 "Current location:${lastLocation.latitude} ${lastLocation.longitude}",
                 Toast.LENGTH_LONG
             ).show()
@@ -127,7 +127,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     }
 
     private fun createEntity(location: Location){
-        Toast.makeText(activity!!.applicationContext, "Current locatin:\n$location for new entity", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity().applicationContext, "Current locatin:\n$location for new entity", Toast.LENGTH_LONG).show()
         map.addMarker(
             MarkerOptions()
                 .position(LatLng(location.latitude, location.longitude))
@@ -137,14 +137,14 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     }
 
     override fun onMyLocationButtonClick(): Boolean {
-        Toast.makeText(activity!!.applicationContext, "MyLocation button clicked", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity().applicationContext, "MyLocation button clicked", Toast.LENGTH_LONG).show()
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false
     }
 
     override fun onMyLocationClick(location: Location) {
-        Toast.makeText(activity!!.applicationContext, "Current locatin:\n$location", Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity().applicationContext, "Current locatin:\n$location", Toast.LENGTH_LONG).show()
 
     }
 
