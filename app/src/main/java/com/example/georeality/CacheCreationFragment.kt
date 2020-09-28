@@ -43,20 +43,20 @@ class CacheCreationFragment : Fragment() {
         askPerm()
         val view = inflater.inflate(R.layout.fragment_cache_creation, container, false)
         val spinner: Spinner = view.findViewById(R.id.spinner)
-        val switch: SwitchCompat = view.findViewById(R.id.typeSwitch)
-        val button: Button = view.findViewById(R.id.saveButton)
+        val typeSwitch: SwitchCompat = view.findViewById(R.id.typeSwitch)
+        val saveButton: Button = view.findViewById(R.id.saveButton)
         val recordButton: Button = view.findViewById(R.id.recordButton)
         var recording: Boolean = false
 
-        switch.setOnCheckedChangeListener { compoundButton, b ->
+        typeSwitch.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
-                switch.text = getString(R.string.audio)
+                typeSwitch.text = getString(R.string.audio)
                 typeView.text = getString(R.string.record)
                 spinner.visibility = View.GONE
                 recordButton.visibility = View.VISIBLE
                 timerView.visibility = View.VISIBLE
             } else {
-                switch.text = getString(R.string.ar)
+                typeSwitch.text = getString(R.string.ar)
                 typeView.text = getString(R.string.type)
                 spinner.visibility = View.VISIBLE
                 recordButton.visibility = View.GONE
@@ -64,11 +64,12 @@ class CacheCreationFragment : Fragment() {
             }
         }
 
-        button.setOnClickListener {
-            val cacheType = switch.text.toString()
+        saveButton.setOnClickListener {
+            var location = MapFragment().lastLocation
+            val cacheType = typeSwitch.text.toString()
             val title = title_text_input.text
             val spinnerType = spinner.selectedItem.toString()
-            Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}")
+            Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}, location: ${location}")
         }
 
         recordButton.setOnClickListener {

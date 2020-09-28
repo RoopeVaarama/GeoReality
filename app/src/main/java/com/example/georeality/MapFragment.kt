@@ -37,7 +37,7 @@ import kotlinx.android.synthetic.main.fragment_map.*
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMyLocationClickListener, OnMapReadyCallback {
     private lateinit var navController : NavController
-    private  lateinit var lastLocation: Location
+    private lateinit var lastLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var map : GoogleMap
     private lateinit var fragmentTransaction: FragmentTransaction
@@ -48,6 +48,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
+
 
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
