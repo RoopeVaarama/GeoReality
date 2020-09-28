@@ -6,11 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
 import kotlinx.android.synthetic.*
+import kotlinx.android.synthetic.main.fragment_cache_creation.*
+import kotlinx.android.synthetic.main.fragment_cache_creation.view.*
 
 /**
  * @author Topias Peiponen, Roope Vaarama
@@ -25,15 +24,16 @@ class CacheCreationFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_cache_creation, container, false)
         val spinner: Spinner = view.findViewById(R.id.spinner)
+
         spinner.onItemSelectedListener = SpinnerActivity()
         //Crate an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             requireActivity().applicationContext,
             R.array.type_array,
-            android.R.layout.simple_spinner_item
+            R.layout.color_spinner_layout
         ).also { adapter ->
             //Specify the layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout)
             //Apply the adapter to the spinner
             spinner.adapter = adapter
         }
