@@ -56,6 +56,9 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, Observer {
             Log.d("onCreateView", it.toString())
         })
+        dbViewModel!!.arMarkers.observe(viewLifecycleOwner, Observer {
+            Log.d("OnCreateView", it.toString())
+        })
 
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
@@ -72,6 +75,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         navController = Navigation.findNavController(view)
         navController.navigate(R.id.action_mapFragment_to_cacheCreationFragment)
         dbViewModel!!.addNewAudioMarker("asds", 1.0, 3.0, "asd")
+        dbViewModel!!.addNewARMarker("asdasds", 13.0, 233.0, "asd")
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
