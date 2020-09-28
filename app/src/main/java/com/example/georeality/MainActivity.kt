@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.firebase.ui.auth.AuthUI
@@ -46,7 +47,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //Check if user is logged in, if not then go to login screen
         mAuth = FirebaseAuth.getInstance()
         user = mAuth.currentUser
-        Database.databaseRef = Firebase.database.reference
 
         if (!userIsLoggedIn()) {
             showSignInOptions()
