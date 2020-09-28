@@ -65,11 +65,10 @@ class CacheCreationFragment : Fragment() {
         }
 
         saveButton.setOnClickListener {
-            var location = MapFragment().lastLocation
             val cacheType = typeSwitch.text.toString()
             val title = title_text_input.text
             val spinnerType = spinner.selectedItem.toString()
-            Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}, location: ${location}")
+            Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}, location:")
         }
 
         recordButton.setOnClickListener {

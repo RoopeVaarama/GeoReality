@@ -58,8 +58,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
-        fab.setOnClickListener{navController.navigate(R.id.action_mapFragment_to_cacheCreationFragment)}
+        fab.setOnClickListener(fabClickListener)
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
@@ -115,10 +114,10 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 Toast.LENGTH_LONG
             ).show()
 
-            fragmentTransaction = childFragmentManager.beginTransaction()
-            val mapFragment = MapFragment()
+            navController = Navigation.findNavController(it)
+            navController.navigate(R.id.action_mapFragment_to_cacheCreationFragment)
+            //val mapFragment = MapFragment()
             //fragmentTransaction.replace(R.id.fragment_container, mapFragment)
-            fragmentTransaction.commit()
             /*val intent = Intent(this, EntityActivity::class.java).apply {
                 putExtra("latitude", lastLocation.latitude)
                 putExtra("longitude", lastLocation.longitude)
