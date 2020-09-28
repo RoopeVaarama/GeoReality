@@ -18,12 +18,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
-    <Switch
-        android:id="@+id/switch1"
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/typeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="@string/type_switch"
+        android:text="@string/ar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.003"
@@ -76,18 +76,21 @@
 
     <EditText
         android:id="@+id/title_text_input"
-        android:layout_width="358dp"
-        android:layout_height="46dp"
+        android:layout_width="381dp"
+        android:layout_height="42dp"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="48dp"
         android:ems="10"
         android:hint="@string/title"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/typeView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintHorizontal_bias="0.071"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1"
-        app:layout_constraintVertical_bias="0.128" />
+        app:layout_constraintTop_toBottomOf="@+id/typeSwitch"
+        app:layout_constraintVertical_bias="0.128"
+        android:importantForAutofill="no" />
 
     <Spinner
         android:theme="@style/spinnerStyle"
@@ -100,5 +103,31 @@
         app:layout_constraintTop_toBottomOf="@+id/typeView"
         app:layout_constraintVertical_bias="0.027"
         />
+
+    <Button
+        android:id="@+id/recordButton"
+        android:layout_width="189dp"
+        android:layout_height="90dp"
+        android:text="@string/record"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.072"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/timerView"
+        android:layout_width="186dp"
+        android:layout_height="89dp"
+        android:text="@string/_00_00"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recordButton"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

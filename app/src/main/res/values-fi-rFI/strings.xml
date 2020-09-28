@@ -14,6 +14,11 @@
     <string name="type">Type</string>
     <string name="cache_type">Cache type</string>
     <string name="create_a_new_cache">Create a new cache</string>
-    <string name="type_switch">Switch</string>
+    <string name="ar">AR</string>
     <string name="save">Save</string>
+    <string name="audio">Audio</string>
+    <string name="recording">Äänitä</string>
+    <string name="record">Record</string>
+    <string name="_00_00">00:00</string>
+    <string name="stop">Stop</string>
 </resources>
