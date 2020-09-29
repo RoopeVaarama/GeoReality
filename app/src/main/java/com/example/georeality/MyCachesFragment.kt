@@ -1,4 +1,4 @@
 package com.example.georeality
 
-class CacheCreationFragment {
+class MyCachesFragment {
 }
