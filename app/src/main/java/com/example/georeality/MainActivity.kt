@@ -84,6 +84,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
+    private fun switchToInfoFragment() {
+        navController.navigate(R.id.infoFragment)
+
+    }
     private fun userIsLoggedIn(): Boolean {
         return user != null
     }
@@ -139,6 +143,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 mAuth.signOut()
                 showSignInOptions()
             }
+            "Info" -> switchToInfoFragment()
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return false

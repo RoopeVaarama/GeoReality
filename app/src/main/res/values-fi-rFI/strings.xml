@@ -22,4 +22,5 @@
     <string name="_00_00">00:00</string>
     <string name="stop">Stop</string>
     <string name="_2d_text">2D Text</string>
+    <string name="info">Info</string>
 </resources>

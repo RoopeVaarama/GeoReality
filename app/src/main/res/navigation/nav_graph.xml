@@ -34,6 +34,18 @@
         <action
             android:id="@+id/action_myCachesFragment2_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_myCachesFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.example.georeality.InfoFragment"
+        android:label="fragment_info"
+        tools:layout="@layout/fragment_info" >
+        <action
+            android:id="@+id/action_infoFragment_to_myCachesFragment"
+            app:destination="@id/myCachesFragment" />
     </fragment>
 
 </navigation>
