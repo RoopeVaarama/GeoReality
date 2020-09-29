@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:66252458467:android:e6c29041d59f105eae38d6",
+        "mobilesdk_app_id": "1:66252458467:android:184d70b60d88bdabae38d6",
         "android_client_info": {
           "package_name": "com.example.georeality"
         }
       },
       "oauth_client": [
         {
-          "client_id": "66252458467-jlkps6sh0ab4plft7insnm5mi54osbfv.apps.googleusercontent.com",
+          "client_id": "66252458467-2pce89h3etcav7srb4hgk1n3sqocl0t2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.georeality",
-            "certificate_hash": "ac63786e7c253332bae828e953695f84a323230a"
+            "certificate_hash": "6fecb53a5907a37a8c49ef054a366e82acd8c84c"
           }
         },
         {
