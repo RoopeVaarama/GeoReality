@@ -9,7 +9,10 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import android.util.Log
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentTransaction
@@ -58,6 +61,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         setupNav()
         checkPermissions()
+        loadMarkers()
+
     }
 
     private fun checkPermissions() {
@@ -72,6 +77,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 0
             )
         }
+    }
+
+    private fun loadMarkers(){
+
     }
 
     private fun switchToMapFragment() {
@@ -96,7 +105,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return user!!.isAnonymous
     }
 
-
     private fun showSignInOptions() {
         providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build()
@@ -119,6 +127,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setupNav() {
         setSupportActionBar(topAppBar)
 
+
         val drawerToggle = ActionBarDrawerToggle(
             this,
             drawer_layout,
@@ -128,6 +137,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         )
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
+
+
+
         navigation.setNavigationItemSelectedListener(this)
     }
 
@@ -138,11 +150,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 switchToMapFragment()
                 navigation.setCheckedItem(item)
             }
-            "My caches" -> switchToUserCachesFragment()
             "Logout" -> {
                 mAuth.signOut()
                 showSignInOptions()
             }
+            "My caches" -> switchToUserCachesFragment()
             "Info" -> switchToInfoFragment()
         }
         drawer_layout.closeDrawer(GravityCompat.START)

@@ -23,4 +23,5 @@
     <string name="stop">Stop</string>
     <string name="_2d_text">2D Text</string>
     <string name="info">Info</string>
+    <string name="log_out">Log out</string>
 </resources>

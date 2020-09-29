@@ -4,7 +4,7 @@
     <string name="nav_menu_item_map">Map</string>
     <string name="nav_menu_item_cache">My caches</string>
     <string name="nav_menu_item_create_cache">Create new cache</string>
-    <string name="nav_menu_title">Placeholder menu</string>
+    <string name="nav_menu_title"></string>
     <string name="login_email_button">Sign-in with email</string>
     <string name="login_anon_button">Login as a guest</string>
     <string name="login_signup_button">Sign-up</string>
@@ -24,5 +24,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="_2d_text">2D Text</string>
     <string name="info">Info</string>
+    <string name="log_out">Log out</string>
 
 </resources>
