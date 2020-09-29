@@ -92,17 +92,35 @@
         app:layout_constraintVertical_bias="0.128"
         android:importantForAutofill="no" />
 
+    <EditText
+        android:id="@+id/text_input_2D"
+        android:layout_width="381dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/_2d_text"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="gone"/>
+
     <Spinner
-        android:theme="@style/spinnerStyle"
         android:id="@+id/spinner"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
+        android:theme="@style/spinnerStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/typeView"
-        app:layout_constraintVertical_bias="0.027"
-        />
+        app:layout_constraintVertical_bias="0.027" />
 
     <Button
         android:id="@+id/recordButton"

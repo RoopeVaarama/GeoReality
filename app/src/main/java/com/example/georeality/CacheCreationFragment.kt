@@ -103,9 +103,11 @@ class CacheCreationFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 if (pos == 0){
                     Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
+                    text_input_2D.visibility = View.VISIBLE
                 }
                 if (pos == 1){
                     Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
+                    text_input_2D.visibility = View.GONE
                 }
             }
 
