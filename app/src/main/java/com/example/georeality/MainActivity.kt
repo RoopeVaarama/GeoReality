@@ -80,10 +80,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private fun switchToCreateCacheFragment() {
-        navController.navigate(R.id.cacheCreationFragment)
-    }
-
     private fun userIsLoggedIn(): Boolean {
         return user != null
     }
@@ -135,7 +131,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 navigation.setCheckedItem(item)
             }
             "My caches" -> switchToUserCachesFragment()
-            "Create new cache" -> switchToCreateCacheFragment()
             "Logout" -> {
                 mAuth.signOut()
                 showSignInOptions()
