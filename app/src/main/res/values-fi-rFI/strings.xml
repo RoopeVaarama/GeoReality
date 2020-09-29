@@ -21,4 +21,7 @@
     <string name="record">Record</string>
     <string name="_00_00">00:00</string>
     <string name="stop">Stop</string>
+    <string name="ar_type_2d">2D teksti</string>
+    <string name="ar_type_3d">3D malli</string>
+    <string name="ar_text">Tekstiä blaa</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.georeality
 
+import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -71,16 +72,14 @@ class DBViewModel : ViewModel() {
 
     }
 
-    fun addNewAudioMarker(creator: String?, latitude: Double?, longitude: Double?, title: String?) {
-        val newAudioMarker = AudioMarker(creator, latitude, longitude, title)
+    fun addNewAudioMarker(audioMarker : AudioMarker) {
         val tempDbAudio = dbAudio.child("audio").push()
-        tempDbAudio.setValue(newAudioMarker)
+        tempDbAudio.setValue(audioMarker)
 
     }
-    fun addNewARMarker(creator: String?, latitude: Double?, longitude: Double?, title: String?) {
-        val newARMarker = ARMarker(creator, latitude, longitude, title)
-        val tempARAudio = dbAR.child("ar").push()
-        tempARAudio.setValue(newARMarker)
+    fun addNewARMarker(arMarker : ARMarker) {
+        val tempDbAR = dbAR.child("ar").push()
+        tempDbAR.setValue(arMarker)
     }
 
     fun fetchAudioMarkers() {
@@ -91,12 +90,20 @@ class DBViewModel : ViewModel() {
     }
 }
 
+object Database {
+    var dbViewModel : DBViewModel? = null
+    init {
+        dbViewModel = DBViewModel()
+    }
+}
+
 // AudioMarker contains data to create a marker with audio features
 data class AudioMarker(
     var creator : String? = "",
     var latitude : Double? = 0.0,
     var longitude : Double? = 0.0,
-    var title : String? = ""
+    var title : String? = "",
+    var audio_id : String? = ""
 )
 
 // ARMarker contains data to create a marker with AR features and capabilities
@@ -104,5 +111,9 @@ data class ARMarker(
     var creator : String? = "",
     var latitude : Double? = 0.0,
     var longitude : Double? = 0.0,
-    var title : String? = ""
+    var title : String? = "",
+    var type : String? = "",
+    var text : String? = "",
+    var model_type : String? = ""
+
 )
