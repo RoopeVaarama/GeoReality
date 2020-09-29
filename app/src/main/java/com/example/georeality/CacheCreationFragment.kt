@@ -139,12 +139,14 @@ class CacheCreationFragment : Fragment() {
                     Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
                     arTextInput.visibility = View.VISIBLE
                     spinnerModels.visibility = View.GONE
+                    text_input_2D.visibility = View.VISIBLE
                 }
                 //3D models is selected
                 if (pos == 1){
                     Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
                     arTextInput.visibility = View.GONE
                     spinnerModels.visibility = View.VISIBLE
+                    text_input_2D.visibility = View.GONE
                 }
             }
 

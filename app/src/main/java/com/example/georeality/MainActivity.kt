@@ -8,12 +8,15 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.util.Log
+import android.view.Gravity
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.onNavDestinationSelected
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun switchToMapFragment() {
         navController.navigate(R.id.mapFragment)
+
     }
 
     private fun switchToUserCachesFragment() {
@@ -80,10 +84,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
 
-    private fun switchToCreateCacheFragment() {
-        navController.navigate(R.id.cacheCreationFragment)
-    }
+    private fun switchToInfoFragment() {
+        navController.navigate(R.id.infoFragment)
 
+    }
     private fun userIsLoggedIn(): Boolean {
         return user != null
     }
@@ -135,12 +139,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 navigation.setCheckedItem(item)
             }
             "My caches" -> switchToUserCachesFragment()
-            "Create new cache" -> switchToCreateCacheFragment()
             "Logout" -> {
                 mAuth.signOut()
                 showSignInOptions()
             }
+            "Info" -> switchToInfoFragment()
         }
+        drawer_layout.closeDrawer(GravityCompat.START)
         return false
     }
 }
