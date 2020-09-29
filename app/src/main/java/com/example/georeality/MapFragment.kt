@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -50,7 +51,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
-        dbViewModel = DBViewModel()
+        dbViewModel = Database.dbViewModel
         dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, Observer {
             Log.d("onCreateView", it.toString())
         })
@@ -120,10 +121,10 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 "Current location:${lastLocation.latitude} ${lastLocation.longitude}",
                 Toast.LENGTH_LONG
             ).show()
-            val locationdata = LatLng(lastLocation.latitude, lastLocation.longitude)
+            val locationdata = "${lastLocation.latitude}, ${lastLocation.longitude}"
             val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
             var editor = sharedPref?.edit()
-            editor?.putString("locationData", locationdata.toString())
+            editor?.putString("locationData", locationdata)
             editor?.commit()
 
             navController = Navigation.findNavController(it)

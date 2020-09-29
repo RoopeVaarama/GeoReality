@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="type_array">
-        <item>2D Text</item>
-        <item>3D Model</item>
+        <item>@string/ar_type_2d</item>
+        <item>@string/ar_type_3d</item>
     </string-array>
 </resources>
