@@ -69,15 +69,8 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        fab.setOnClickListener{testFun(view)}
+        fab.setOnClickListener{fabClickListener}
     }
-    fun testFun(view : View) {
-        navController = Navigation.findNavController(view)
-        navController.navigate(R.id.action_mapFragment_to_cacheCreationFragment)
-        dbViewModel!!.addNewAudioMarker("asds", 1.0, 3.0, "asd")
-        dbViewModel!!.addNewARMarker("asdasds", 13.0, 233.0, "asd")
-    }
-
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap ?: return
         googleMap.setOnMyLocationButtonClickListener(this)
