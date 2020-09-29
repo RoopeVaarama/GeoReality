@@ -107,9 +107,6 @@ class CacheCreationFragment : Fragment() {
                 if (pos == 1){
                     Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
                 }
-                if (pos == 2){
-                    Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
-                }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
