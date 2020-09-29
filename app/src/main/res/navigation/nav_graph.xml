@@ -13,14 +13,27 @@
         <action
             android:id="@+id/action_mapFragment_to_cacheCreationFragment"
             app:destination="@id/cacheCreationFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_myCachesFragment2"
+            app:destination="@id/myCachesFragment" />
     </fragment>
     <fragment
         android:id="@+id/cacheCreationFragment"
         android:name="com.example.georeality.CacheCreationFragment"
-        android:label="fargment_cache_creation"
+        android:label="fragment_cache_creation"
         tools:layout="@layout/fragment_cache_creation" >
         <action
             android:id="@+id/action_cacheCreationFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/myCachesFragment"
+        android:name="com.example.georeality.MyCachesFragment"
+        android:label="fragment_my_caches"
+        tools:layout="@layout/fragment_my_caches" >
+        <action
+            android:id="@+id/action_myCachesFragment2_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+
 </navigation>

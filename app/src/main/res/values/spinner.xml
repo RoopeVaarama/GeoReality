@@ -3,6 +3,5 @@
     <string-array name="type_array">
         <item>2D Text</item>
         <item>3D Model</item>
-        <item>AR Challenge</item>
     </string-array>
 </resources>
