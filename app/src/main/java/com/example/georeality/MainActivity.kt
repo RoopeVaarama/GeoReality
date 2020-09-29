@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun switchToUserCachesFragment() {
+        navController.navigate(R.id.myCachesFragment)
 
     }
 
@@ -129,7 +130,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 switchToMapFragment()
                 navigation.setCheckedItem(item)
             }
-            "My caches" -> Log.d("Pressed", item.toString())
+            "My caches" -> switchToUserCachesFragment()
             "Create new cache" -> switchToCreateCacheFragment()
             "Logout" -> {
                 mAuth.signOut()
