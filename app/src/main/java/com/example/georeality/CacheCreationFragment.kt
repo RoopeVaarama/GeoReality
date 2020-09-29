@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.media.*
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,16 +15,12 @@ import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
-import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.fragment_cache_creation.*
-import kotlinx.android.synthetic.main.fragment_cache_creation.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.*
 import java.lang.Exception
-import java.time.LocalTime
 
 /**
  * @author Topias Peiponen, Roope Vaarama
@@ -91,8 +86,6 @@ class CacheCreationFragment : Fragment() {
 
         }
 
-
-        spinner.onItemSelectedListener = SpinnerActivity()
         //Crate an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
             requireActivity().applicationContext,
@@ -104,6 +97,26 @@ class CacheCreationFragment : Fragment() {
             //Apply the adapter to the spinner
             spinner.adapter = adapter
         }
+
+        val spinnerItems = resources.getStringArray(R.array.type_array)
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+                if (pos == 0){
+                    Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
+                }
+                if (pos == 1){
+                    Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
+                }
+                if (pos == 2){
+                    Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
 
         return view
     }
