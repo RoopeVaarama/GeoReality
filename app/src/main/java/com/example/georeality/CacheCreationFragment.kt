@@ -60,22 +60,24 @@ class CacheCreationFragment : Fragment() {
         location = sharedPref?.getString("locationData", "defaultLocation")
 
         typeSwitch.setOnCheckedChangeListener { compoundButton, b ->
+            //AUDIO IS CHECKED
             if (b) {
                 typeSwitch.text = getString(R.string.audio)
                 typeTitle.text = getString(R.string.audio_record)
                 spinner.visibility = View.GONE
                 spinnerModels.visibility = View.GONE
                 arTextInput.visibility = View.GONE
+                audioPanel.visibility = View.VISIBLE
                 recordButton.visibility = View.VISIBLE
                 timerView.visibility = View.VISIBLE
                 switchIsOn = true
-            } else {
+            }
+            //AR IS CHECKED
+            else {
                 typeSwitch.text = getString(R.string.ar)
                 typeTitle.text = getString(R.string.type)
                 spinner.visibility = View.VISIBLE
-                recordButton.visibility = View.GONE
-                playButton.visibility = View.GONE
-                timerView.visibility = View.GONE
+                audioPanel.visibility = View.GONE
                 switchIsOn = false
                 if (spinner.selectedItem.toString() == getString(R.string.ar_type_2d)) {
                     arTextInput.visibility = View.VISIBLE
@@ -192,15 +194,12 @@ class CacheCreationFragment : Fragment() {
      * @return Boolean, true if filled correctly, false if not
      */
     private fun formIsValid() : Boolean {
-        //Check if title and spinner selection is empty
+        //Check if title is empty
         if (titleTextInput.text.toString() == "") {
             Toast.makeText(requireActivity(), "Title cannot be empty!", Toast.LENGTH_SHORT).show()
             return false
         }
-        if (spinner.selectedItem == null) {
-            Toast.makeText(requireActivity(), "AR mode must be selected!", Toast.LENGTH_SHORT).show()
-            return false
-        }
+        //Check if location is available
         if (location == null) {
             Toast.makeText(requireActivity(), "Could not get current location!", Toast.LENGTH_SHORT).show()
             return false
@@ -208,12 +207,12 @@ class CacheCreationFragment : Fragment() {
 
         //Check if type specific fields are empty
         if (switchIsOn) {
-            /*if (recFile == null) {
+            return if (file == null) {
                 Toast.makeText(requireActivity(), "Audio must be recorded!", Toast.LENGTH_SHORT).show()
-                return false
+                false
             } else {
-                return true
-            }*/
+                true
+            }
         } else if (!switchIsOn) {
             return if (arTextInput.text.toString() == "" && spinner.selectedItem.toString() == getString(R.string.ar_type_2d)) {
                 Toast.makeText(requireActivity(), "AR text cannot be empty!", Toast.LENGTH_SHORT).show()
@@ -293,6 +292,8 @@ class CacheCreationFragment : Fragment() {
                 val newAudioMarker = AudioMarker(user, latitude.toDouble(), longitude.toDouble(), title, "placeholderID")
                 Log.d("AudioFile", file.toString())
                 Database.dbViewModel!!.addNewAudioMarker(newAudioMarker)
+
+                Database.dbViewModel!!.addNewAudioTrack(file!!)
             }
         }
     }

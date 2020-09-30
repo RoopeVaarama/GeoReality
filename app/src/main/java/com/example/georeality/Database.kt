@@ -10,7 +10,11 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileInputStream
+import java.io.InputStream
 
 /**
  * @author Topias Peiponen
@@ -24,6 +28,7 @@ import kotlinx.coroutines.launch
 class DBViewModel : ViewModel() {
     private val dbAudio = Firebase.database.getReference("audio_markers")
     private val dbAR = Firebase.database.getReference("ar_markers")
+    private val dbStorage = FirebaseStorage.getInstance()
 
     private var _audioMarkers = MutableLiveData<MutableList<AudioMarker>>()
     val audioMarkers : LiveData<MutableList<AudioMarker>> = _audioMarkers
@@ -82,11 +87,9 @@ class DBViewModel : ViewModel() {
         tempDbAR.setValue(arMarker)
     }
 
-    fun fetchAudioMarkers() {
-
-    }
-    fun fetchARMarkers() {
-
+    fun addNewAudioTrack(file : File) {
+        val inputStream : InputStream = FileInputStream(file)
+        dbStorage.reference.child("audio_tracks").putStream(inputStream)
     }
 }
 
