@@ -51,10 +51,11 @@
             android:text="@string/type" />
 
         <LinearLayout
-            android:id="@+id/horizontalLayout"
+            android:id="@+id/audioPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -88,8 +89,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:textSize="40sp"
-                android:visibility="gone" />
+                android:textSize="40sp" />
         </LinearLayout>
 
         <Spinner
