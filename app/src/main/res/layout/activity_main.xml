@@ -52,28 +52,6 @@
             app:headerLayout="@layout/navigation_header_layout"
             app:menu="@menu/navigation_items">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <Button
-                    android:padding="16dp"
-                    android:textSize="16sp"
-                    android:id="@+id/logout_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@android:color/white"
-                    android:text="@string/log_out"
-                    app:icon="@drawable/ic_baseline_exit_to_app_24"
-                    app:iconTint="@android:color/white"
-                    style="@style/Widget.MaterialComponents.Button.Icon"
-                    />
-            </LinearLayout>
-
 
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>

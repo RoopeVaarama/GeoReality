@@ -9,5 +9,8 @@
 
         <item android:icon="@drawable/ic_baseline_info_24"
             android:title="@string/info" />
+        <item android:icon="@drawable/ic_baseline_exit_to_app_24"
+            android:title="@string/log_out"/>
+
     </group>
 </menu>
