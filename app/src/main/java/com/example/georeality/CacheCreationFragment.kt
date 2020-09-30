@@ -4,8 +4,8 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.media.*
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,21 +15,21 @@ import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_cache_creation.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.io.*
-import java.lang.Exception
 
 /**
  * @author Topias Peiponen, Roope Vaarama
  * @since 24.09.2020
  */
 class CacheCreationFragment : Fragment() {
-
-    lateinit var recFile: File
+    private var file : File? = null
+    private var audioRecorder : AudioRecorder? = null
     private var Recording = false
     private var switchIsOn = false
     private var location : String? = null
@@ -42,6 +42,7 @@ class CacheCreationFragment : Fragment() {
         askPerm()
         val view = inflater.inflate(R.layout.fragment_cache_creation, container, false)
         setupLayout(view)
+        audioRecorder = AudioRecorder()
 
         return view
     }
@@ -52,6 +53,8 @@ class CacheCreationFragment : Fragment() {
         val typeSwitch: SwitchCompat = view.findViewById(R.id.typeSwitch)
         val saveButton: Button = view.findViewById(R.id.saveButton)
         val recordButton: Button = view.findViewById(R.id.recordButton)
+        val playButton : Button = view.findViewById(R.id.playButton)
+        val timer : Chronometer = view.findViewById(R.id.timerView)
         var recording: Boolean = false
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         location = sharedPref?.getString("locationData", "defaultLocation")
@@ -59,7 +62,7 @@ class CacheCreationFragment : Fragment() {
         typeSwitch.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 typeSwitch.text = getString(R.string.audio)
-                typeTitle.text = getString(R.string.record)
+                typeTitle.text = getString(R.string.audio_record)
                 spinner.visibility = View.GONE
                 spinnerModels.visibility = View.GONE
                 arTextInput.visibility = View.GONE
@@ -71,6 +74,7 @@ class CacheCreationFragment : Fragment() {
                 typeTitle.text = getString(R.string.type)
                 spinner.visibility = View.VISIBLE
                 recordButton.visibility = View.GONE
+                playButton.visibility = View.GONE
                 timerView.visibility = View.GONE
                 switchIsOn = false
                 if (spinner.selectedItem.toString() == getString(R.string.ar_type_2d)) {
@@ -93,18 +97,29 @@ class CacheCreationFragment : Fragment() {
 
         recordButton.setOnClickListener {
             if(!recording){
-                audioRecorder()
-
+                file = audioRecorder?.recordAudio(requireActivity())
                 typeTitle.text = getString(R.string.recording)
                 recordButton.text = getString(R.string.stop)
+                playButton.visibility = View.GONE
+                timer.base = SystemClock.elapsedRealtime()
+                timer.start()
                 recording = true
-            } else {
-                Recording = false
-                typeTitle.text = getString(R.string.record)
-                recordButton.text = getString(R.string.record)
-                recording = false
-            }
 
+            } else {
+                audioRecorder?.stopRecording()
+                typeTitle.text = getString(R.string.audio_record)
+                recordButton.text = getString(R.string.audio_record)
+                timer.stop()
+                timer.base = SystemClock.elapsedRealtime()
+                recording = false
+
+                if (file != null) {
+                    playButton.visibility = View.VISIBLE
+                }
+            }
+        }
+        playButton.setOnClickListener {
+            playRecording(timer)
         }
 
         //ArrayAdapter for type spinner
@@ -209,6 +224,24 @@ class CacheCreationFragment : Fragment() {
         }
         return true
     }
+    private fun playRecording(timer : Chronometer) {
+        if (file != null) {
+            timer.base = SystemClock.elapsedRealtime()
+            timer.start()
+            try {
+                val inputStream = FileInputStream(file!!)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    val time = async(Dispatchers.IO) {audioRecorder!!.playAudio(inputStream)}
+                    time.await()
+                    timer.stop()
+                    timer.base = SystemClock.elapsedRealtime()
+                }
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
     private fun submitCache() {
         Log.d("SubmitCache", "Clicked! $switchIsOn")
         if (formIsValid()) {
@@ -258,61 +291,9 @@ class CacheCreationFragment : Fragment() {
             //Audio is selected
             else if (switchIsOn) {
                 val newAudioMarker = AudioMarker(user, latitude.toDouble(), longitude.toDouble(), title, "placeholderID")
+                Log.d("AudioFile", file.toString())
                 Database.dbViewModel!!.addNewAudioMarker(newAudioMarker)
             }
-        }
-    }
-
-    private fun audioRecorder() {
-        val file = "record.raw"
-        /*val storageDir = getExternalFilesDir(Environment.DIRECTORY_MUSIC)*/
-        try {
-            //recFile = File("$storageDir/$file")
-        } catch (e: Exception) {
-            Log.d("error", "error creating file: ${e.message}")
-        }
-
-        try {
-            val outputStream = FileOutputStream(recFile)
-            val bufferedOutputStream = BufferedOutputStream(outputStream)
-            val dataOutputStream = DataOutputStream(bufferedOutputStream)
-
-            val minBufferSize = AudioRecord.getMinBufferSize(
-                44100,
-                AudioFormat.CHANNEL_OUT_STEREO,
-                AudioFormat.ENCODING_PCM_16BIT
-            )
-
-            val aFormat = AudioFormat.Builder()
-                .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                .setSampleRate(44100)
-                .setChannelMask(AudioFormat.CHANNEL_OUT_STEREO)
-                .build()
-
-            val recorder = AudioRecord.Builder()
-                .setAudioSource(MediaRecorder.AudioSource.MIC)
-                .setAudioFormat(aFormat)
-                .setBufferSizeInBytes(minBufferSize)
-                .build()
-
-            val audioData = ByteArray(minBufferSize)
-
-            GlobalScope.launch(Dispatchers.IO) {
-                Recording = true
-                recorder.startRecording()
-                while (Recording) {
-                    val numofBytes = recorder.read(audioData, 0, minBufferSize)
-                    if (numofBytes > 0) {
-                        dataOutputStream.write(audioData)
-
-                    }
-                }
-                Log.d("audioplay", "Recording stopped")
-                recorder.stop()
-                dataOutputStream.close()
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 

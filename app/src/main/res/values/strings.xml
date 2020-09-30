@@ -17,7 +17,7 @@
     <string name="save">Save</string>
     <string name="audio">Audio</string>
     <string name="recording">Recording</string>
-    <string name="record">Record</string>
+    <string name="audio_record">Record</string>
     <string name="_00_00">00:00</string>
     <string name="stop">Stop</string>
     <string name="ar_type_2d">2D text</string>
@@ -25,6 +25,10 @@
     <string name="ar_text">Text to be inserted</string>
     <string name="_2d_text">2D Text</string>
     <string name="info">Info</string>
+    <string name="audio_recording">Recording...</string>
+    <string name="audio_play">Play audio</string>
+    <string name="audio_new">New</string>
+    <string name="audio_stop">Stop</string>
     <string name="log_out">Log out</string>
 
 </resources>

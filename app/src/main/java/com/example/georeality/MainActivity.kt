@@ -85,7 +85,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun switchToMapFragment() {
-        navController.navigate(R.id.mapFragment)
+        if(navController.currentDestination!!.id != R.id.mapFragment) {
+            navController.navigate(R.id.mapFragment)
+        }
 
     }
 
