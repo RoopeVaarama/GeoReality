@@ -30,4 +30,5 @@
     <string name="audio_play">Toista</string>
     <string name="audio_new">Uusi</string>
     <string name="audio_stop">Lopeta</string>
+    <string name="log_out">Log out</string>
 </resources>
