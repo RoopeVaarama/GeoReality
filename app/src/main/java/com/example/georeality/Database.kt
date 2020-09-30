@@ -1,5 +1,6 @@
 package com.example.georeality
 
+import android.icu.text.Transliterator
 import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -80,13 +81,6 @@ class DBViewModel : ViewModel() {
     fun addNewARMarker(arMarker : ARMarker) {
         val tempDbAR = dbAR.child("ar").push()
         tempDbAR.setValue(arMarker)
-    }
-
-    fun fetchAudioMarkers() {
-
-    }
-    fun fetchARMarkers() {
-
     }
 }
 

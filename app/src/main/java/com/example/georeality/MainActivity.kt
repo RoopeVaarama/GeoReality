@@ -62,8 +62,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         setupNav()
         checkPermissions()
-        loadMarkers()
-
     }
 
     private fun checkPermissions() {
@@ -78,10 +76,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 0
             )
         }
-    }
-
-    private fun loadMarkers(){
-
     }
 
     private fun switchToMapFragment() {

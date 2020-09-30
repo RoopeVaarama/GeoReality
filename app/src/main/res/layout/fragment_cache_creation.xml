@@ -89,7 +89,7 @@
                 android:layout_weight="1"
                 android:textAlignment="center"
                 android:textSize="40sp"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </LinearLayout>
 
         <Spinner

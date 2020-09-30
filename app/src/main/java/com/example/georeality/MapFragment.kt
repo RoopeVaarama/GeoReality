@@ -51,13 +51,6 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
-        dbViewModel = Database.dbViewModel
-        dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, Observer {
-            Log.d("onCreateView", it.toString())
-        })
-        dbViewModel!!.arMarkers.observe(viewLifecycleOwner, Observer {
-            Log.d("OnCreateView", it.toString())
-        })
 
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
@@ -74,6 +67,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         googleMap.setOnMyLocationButtonClickListener(this)
         googleMap.setOnMyLocationClickListener(this)
         enableMyLocation()
+        loadEntitys()
 
     }
 
@@ -129,24 +123,25 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
             navController = Navigation.findNavController(it)
             navController.navigate(R.id.action_mapFragment_to_cacheCreationFragment)
-            //val mapFragment = MapFragment()
-            //fragmentTransaction.replace(R.id.fragment_container, mapFragment)
-            /*val intent = Intent(this, EntityActivity::class.java).apply {
-                putExtra("latitude", lastLocation.latitude)
-                putExtra("longitude", lastLocation.longitude)
-            }
-            startActivity(intent)*/
         }
     }
+    private fun loadEntitys(){
+        dbViewModel = Database.dbViewModel
+        dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, Observer {
+            Log.d("onCreateView", it.toString())
+            //To create AR markers on map
+            for (i in it.indices){
+                Log.d("marker", "${it[i].latitude!!} ${it[i].longitude}" )
+                map.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(it[i].latitude!!, it[i].longitude!!))
+                        .title(it[i].title)
+                )}
 
-    private fun createEntity(location: Location){
-        Toast.makeText(requireActivity().applicationContext, "Current locatin:\n$location for new entity", Toast.LENGTH_LONG).show()
-        map.addMarker(
-            MarkerOptions()
-                .position(LatLng(location.latitude, location.longitude))
-                .title("Created by (current username)")
-
-        )
+        })
+        dbViewModel!!.arMarkers.observe(viewLifecycleOwner, Observer {
+            Log.d("OnCreateView", it.toString())
+        })
     }
 
     override fun onMyLocationButtonClick(): Boolean {

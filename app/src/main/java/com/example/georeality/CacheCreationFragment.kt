@@ -87,7 +87,6 @@ class CacheCreationFragment : Fragment() {
 
 
         saveButton.setOnClickListener {
-
             val cacheType = typeSwitch.text.toString()
             val title = titleTextInput.text
             val spinnerType = spinner.selectedItem.toString()
