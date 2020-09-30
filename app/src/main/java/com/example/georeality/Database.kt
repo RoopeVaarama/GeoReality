@@ -12,6 +12,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageMetadata
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
@@ -78,19 +79,30 @@ class DBViewModel : ViewModel() {
 
     }
 
-    fun addNewAudioMarker(audioMarker : AudioMarker) {
+    fun addNewAudioMarker(user : String?,
+                          latitude : Double?,
+                          longitude : Double?,
+                          title : String?,
+                          file : File) {
         val tempDbAudio = dbAudio.child("audio").push()
-        tempDbAudio.setValue(audioMarker)
-
+        val markerID = tempDbAudio.key
+        if (markerID != null) {
+            addNewAudioTrack(file, markerID)
+        }
+        val newAudioMarker = AudioMarker(user, latitude, longitude, title, markerID)
+        tempDbAudio.setValue(newAudioMarker)
     }
+
     fun addNewARMarker(arMarker : ARMarker) {
         val tempDbAR = dbAR.child("ar").push()
         tempDbAR.setValue(arMarker)
+
     }
 
-    fun addNewAudioTrack(file : File) {
+    private fun addNewAudioTrack(file : File, id : String) {
         val inputStream : InputStream = FileInputStream(file)
-        dbStorage.reference.child("audio_tracks").putStream(inputStream)
+
+        dbStorage.reference.child(id).putStream(inputStream)
     }
 }
 

@@ -288,11 +288,8 @@ class CacheCreationFragment : Fragment() {
             }
             //Audio is selected
             else if (switchIsOn) {
-                val newAudioMarker = AudioMarker(user, latitude.toDouble(), longitude.toDouble(), title, "placeholderID")
                 Log.d("AudioFile", file.toString())
-                Database.dbViewModel!!.addNewAudioMarker(newAudioMarker)
-
-                Database.dbViewModel!!.addNewAudioTrack(file!!)
+                Database.dbViewModel!!.addNewAudioMarker(user, latitude.toDouble(), longitude.toDouble(), title, file!!)
             }
         }
     }
