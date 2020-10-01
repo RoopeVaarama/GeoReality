@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.fragment_map.*
 
@@ -68,7 +70,23 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         googleMap.setOnMyLocationClickListener(this)
         enableMyLocation()
         loadEntitys()
+        map.setOnMarkerClickListener { marker ->
+            var startPoint = lastLocation
+            var endPoint: Location = Location(LocationManager.GPS_PROVIDER)
+            endPoint.latitude = marker.position.latitude
+            endPoint.longitude = marker.position.longitude
+            var dist = startPoint.distanceTo(endPoint)
 
+            if (dist < 5) {
+                Log.d("marker", "onclick in range")
+                Log.d("marker", "distance to marker: ${dist} meters")
+            } else {
+                marker.showInfoWindow()
+                Log.d("marker", "onclick")
+                Log.d("marker", "distance to marker: ${dist} meters")
+            }
+            true
+        }
     }
 
     //Enables My Location layer if the fine location permission has been granted.
@@ -141,6 +159,15 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         })
         dbViewModel!!.arMarkers.observe(viewLifecycleOwner, Observer {
             Log.d("OnCreateView", it.toString())
+            for (i in it.indices){
+                Log.d("marker", "${it[i].latitude!!} ${it[i].longitude}" )
+                map.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(60.2314768, 24.969129))
+                        .title("Testi marker")
+                        /*.position(LatLng(it[i].latitude!!, it[i].longitude!!))
+                        .title(it[i].title)*/
+                )}
         })
     }
 
