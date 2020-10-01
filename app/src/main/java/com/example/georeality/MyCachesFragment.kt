@@ -27,7 +27,7 @@ class MyCachesFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         viewManager = LinearLayoutManager(requireActivity())
-        viewAdapter = MyRe
+        //viewAdapter = MyRe
         return inflater.inflate(R.layout.fragment_my_caches, container, false)
     }
 }
