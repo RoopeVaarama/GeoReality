@@ -172,10 +172,6 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                     MarkerOptions()
                         .position(LatLng(it[i].latitude!!, it[i].longitude!!))
                         .title(it[i].title)
-                        .position(LatLng(60.2314768, 24.969129))
-                        .title("Testi marker")
-                        /*.position(LatLng(it[i].latitude!!, it[i].longitude!!))
-                        .title(it[i].title)*/
                 )}
         })
     }
