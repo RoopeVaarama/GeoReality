@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.fragment_map.*
 
@@ -51,6 +53,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
@@ -68,7 +71,28 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         googleMap.setOnMyLocationClickListener(this)
         enableMyLocation()
         loadEntitys()
+        map.setOnMarkerClickListener { marker ->
+            var startPoint = lastLocation
+            var endPoint: Location = Location(LocationManager.GPS_PROVIDER)
+            endPoint.latitude = marker.position.latitude
+            endPoint.longitude = marker.position.longitude
+            var dist = startPoint.distanceTo(endPoint)
 
+            if (dist < 15.0) {
+                Log.d("marker", "onclick in range")
+                Log.d("marker", "distance to marker: ${dist} meters")
+                navController.navigate(R.id.entityFragment)
+            } else {
+                marker.showInfoWindow()
+                Toast.makeText(
+                    requireActivity().applicationContext,
+                    "You are ${dist} meters away from the marker you have to be less than 15 meters away to open cachegit",
+                    Toast.LENGTH_LONG).show()
+                Log.d("marker", "onclick")
+                Log.d("marker", "distance to marker: ${dist} meters")
+            }
+            true
+        }
     }
 
     //Enables My Location layer if the fine location permission has been granted.
@@ -148,6 +172,10 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                     MarkerOptions()
                         .position(LatLng(it[i].latitude!!, it[i].longitude!!))
                         .title(it[i].title)
+                        .position(LatLng(60.2314768, 24.969129))
+                        .title("Testi marker")
+                        /*.position(LatLng(it[i].latitude!!, it[i].longitude!!))
+                        .title(it[i].title)*/
                 )}
         })
     }

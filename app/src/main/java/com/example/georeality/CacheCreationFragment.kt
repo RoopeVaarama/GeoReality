@@ -16,6 +16,8 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_cache_creation.*
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +35,7 @@ class CacheCreationFragment : Fragment() {
     private var Recording = false
     private var switchIsOn = false
     private var location : String? = null
+    private lateinit var navController : NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +46,8 @@ class CacheCreationFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_cache_creation, container, false)
         setupLayout(view)
         audioRecorder = AudioRecorder()
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+
 
         return view
     }
@@ -94,6 +99,7 @@ class CacheCreationFragment : Fragment() {
             val spinnerType = spinner.selectedItem.toString()
             Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}, location: ${location}")
             submitCache()
+            navController.navigate(R.id.mapFragment)
         }
 
         recordButton.setOnClickListener {
