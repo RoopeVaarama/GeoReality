@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.ktx.Firebase
 
 
 class MyCachesFragment : Fragment() {
@@ -25,7 +29,11 @@ class MyCachesFragment : Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var deleteIcon: Drawable
     private lateinit var colorDrawableBackground: ColorDrawable
+    private var user : FirebaseUser? = null
     private var dataset = mutableListOf("Item 1", "Item 2", "Item 3")
+    private var audioMarkersList : MutableList<AudioMarker> = ArrayList()
+    private var arMarkersList : MutableList<ARMarker> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,9 +116,28 @@ class MyCachesFragment : Fragment() {
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        user = FirebaseAuth.getInstance().currentUser
+        //Setup marker observers
+        Database.dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, {
+            for (i in it.indices) {
+                if (it[i].creator == user!!.displayName) {
+                    audioMarkersList.add(it[i])
+                }
+            }
+            Log.d("AUDIOLIST", audioMarkersList.toString())
+        })
+        Database.dbViewModel!!.arMarkers.observe(viewLifecycleOwner, {
+            for (i in it.indices) {
+                if (it[i].creator == user!!.displayName) {
+                    arMarkersList.add(it[i])
+                }
+            }
+            Log.d("ARLIST", arMarkersList.toString())
+        })
+
         // Inflate the layout for this fragment
         return view
-        //viewAdapter = MyRe
     }
 }
 

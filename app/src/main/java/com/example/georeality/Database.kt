@@ -103,6 +103,33 @@ class DBViewModel : ViewModel() {
 
     }
 
+    fun getAudioTrack(id : String) : File? {
+        val storageReference = dbStorage.reference
+        val pathReference = storageReference.child(id)
+
+        val track = File.createTempFile("tempTrack", "raw")
+        pathReference.getFile(track).addOnSuccessListener {
+            Log.d("Track", "Succesfully created")
+        }.addOnFailureListener {
+            Log.d("Error", it.toString())
+        }
+        return track
+    }
+
+    fun deleteMarker(id : String, type : String) {
+        if (type == "audio") {
+            dbAudio.child(id).setValue(null)
+            val trackToDeleteReference = dbStorage.reference.child(id)
+            trackToDeleteReference.delete().addOnSuccessListener {
+                Log.d("File", "File deleted succesfully!")
+            }.addOnFailureListener {
+                Log.d("File", "File could not be deleted!")
+            }
+        } else if (type == "ar") {
+            dbAR.child(id).setValue(null)
+        }
+    }
+
     private fun addNewAudioTrack(file : File, id : String) {
         val inputStream : InputStream = FileInputStream(file)
 

@@ -162,7 +162,8 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                         .position(LatLng(it[i].latitude!!, it[i].longitude!!))
                         .title(it[i].title)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                )}
+                )
+            }
 
         })
         dbViewModel!!.arMarkers.observe(viewLifecycleOwner, Observer {

@@ -17,7 +17,6 @@ class InfoFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,3 +25,4 @@ class InfoFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_info, container, false)
     }
+}
