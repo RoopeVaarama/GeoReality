@@ -53,6 +53,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
@@ -77,11 +78,16 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             endPoint.longitude = marker.position.longitude
             var dist = startPoint.distanceTo(endPoint)
 
-            if (dist < 5) {
+            if (dist < 15.0) {
                 Log.d("marker", "onclick in range")
                 Log.d("marker", "distance to marker: ${dist} meters")
+                navController.navigate(R.id.entityFragment)
             } else {
                 marker.showInfoWindow()
+                Toast.makeText(
+                    requireActivity().applicationContext,
+                    "You are ${dist} meters away from the marker you have to be less than 15 meters away to open cachegit",
+                    Toast.LENGTH_LONG).show()
                 Log.d("marker", "onclick")
                 Log.d("marker", "distance to marker: ${dist} meters")
             }

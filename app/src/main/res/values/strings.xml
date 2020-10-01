@@ -30,5 +30,7 @@
     <string name="audio_new">New</string>
     <string name="audio_stop">Stop</string>
     <string name="log_out">Log out</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
