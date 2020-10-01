@@ -129,7 +129,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         dbViewModel = Database.dbViewModel
         dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, Observer {
             Log.d("onCreateView", it.toString())
-            //To create AR markers on map
+            //To create audio markers on map
             for (i in it.indices){
                 Log.d("marker", "${it[i].latitude!!} ${it[i].longitude}" )
                 map.addMarker(
@@ -141,6 +141,14 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         })
         dbViewModel!!.arMarkers.observe(viewLifecycleOwner, Observer {
             Log.d("OnCreateView", it.toString())
+            //Create AR markers on map
+            for (i in it.indices){
+                Log.d("marker", "${it[i].latitude!!} ${it[i].longitude}" )
+                map.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(it[i].latitude!!, it[i].longitude!!))
+                        .title(it[i].title)
+                )}
         })
     }
 

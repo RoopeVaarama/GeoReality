@@ -13,6 +13,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageMetadata
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
@@ -45,11 +46,13 @@ class DBViewModel : ViewModel() {
         // Implement logic when a new audio marker is added
         val audioMarkerListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("OnChildAddedAudio", snapshot.value.toString())
+                Log.d("AudioDataAmount", snapshot.childrenCount.toString())
                 for (marker in snapshot.children) {
                     val markerClass = marker.getValue<AudioMarker>()
                     if (markerClass != null) {
                         _audioMarkers.value?.add(markerClass)
+                        _audioMarkers.value = _audioMarkers.value
+
                     }
                 }
             }
@@ -57,16 +60,17 @@ class DBViewModel : ViewModel() {
             }
 
         }
-        dbAudio.addValueEventListener(audioMarkerListener)
+        dbAudio.child("audio").addValueEventListener(audioMarkerListener)
 
         // Implement logic when new AR marker is added
         val arMarkerListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("OnChildAddedAR", snapshot.value.toString())
+                Log.d("ArDataAmount", snapshot.childrenCount.toString())
                 for (marker in snapshot.children) {
                     val markerClass = marker.getValue<ARMarker>()
                     if (markerClass != null) {
                         _arMarkers.value?.add(markerClass)
+                        _arMarkers.value = _arMarkers.value
                     }
                 }
             }
@@ -75,7 +79,7 @@ class DBViewModel : ViewModel() {
             }
 
         }
-        dbAR.addValueEventListener(arMarkerListener)
+        dbAR.child("ar").addValueEventListener(arMarkerListener)
 
     }
 
