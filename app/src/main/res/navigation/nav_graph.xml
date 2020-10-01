@@ -32,11 +32,11 @@
         android:label="fragment_my_caches"
         tools:layout="@layout/fragment_my_caches" >
         <action
-            android:id="@+id/action_myCachesFragment2_to_mapFragment"
-            app:destination="@id/mapFragment" />
-        <action
             android:id="@+id/action_myCachesFragment_to_infoFragment"
             app:destination="@id/infoFragment" />
+        <action
+            android:id="@+id/action_myCachesFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/infoFragment"
@@ -47,7 +47,7 @@
             android:id="@+id/action_infoFragment_to_myCachesFragment"
             app:destination="@id/myCachesFragment" />
         <action
-            android:id="@+id/action_infoFragment_to_entityFragment"
+            android:id="@+id/action_infoFragment_to_entityFragment2"
             app:destination="@id/entityFragment" />
     </fragment>
     <fragment
@@ -56,7 +56,7 @@
         android:label="fragment_entity"
         tools:layout="@layout/fragment_entity" >
         <action
-            android:id="@+id/action_entityFragment_to_infoFragment"
+            android:id="@+id/action_entityFragment_to_infoFragment2"
             app:destination="@id/infoFragment" />
     </fragment>
 
