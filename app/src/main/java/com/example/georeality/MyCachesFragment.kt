@@ -40,6 +40,7 @@ class MyCachesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_my_caches, container, false)
         viewManager = LinearLayoutManager(requireActivity())
+<<<<<<< HEAD
         viewAdapter = RecyclerViewAdapter(dataset)
         deleteIcon = ContextCompat.getDrawable(requireActivity().baseContext, R.drawable.ic_delete)!!
         colorDrawableBackground = ColorDrawable(Color.parseColor("#ff0000"))
@@ -110,6 +111,10 @@ class MyCachesFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(recyclerView)
         // Inflate the layout for this fragment
         return view
+=======
+        //viewAdapter = MyRe
+        return inflater.inflate(R.layout.fragment_my_caches, container, false)
+>>>>>>> eced22fa537efc1d37d678982b6ef6c21b663c67
     }
 }
 
