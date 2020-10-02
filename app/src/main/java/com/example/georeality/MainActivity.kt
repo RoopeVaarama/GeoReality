@@ -143,16 +143,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d("Item", item.toString())
         when (item.toString()) {
-            "Map" -> {
+            getString(R.string.nav_menu_item_map) -> {
                 switchToMapFragment()
                 navigation.setCheckedItem(item)
             }
-            "Logout" -> {
+            getString(R.string.nav_menu_item_logout) -> {
                 mAuth.signOut()
                 showSignInOptions()
             }
-            "My caches" -> switchToUserCachesFragment()
-            "Info" -> switchToInfoFragment()
+            getString(R.string.nav_menu_item_cache) -> switchToUserCachesFragment()
+            getString(R.string.nav_menu_item_info) -> switchToInfoFragment()
         }
         drawer_layout.closeDrawer(GravityCompat.START)
         return false
