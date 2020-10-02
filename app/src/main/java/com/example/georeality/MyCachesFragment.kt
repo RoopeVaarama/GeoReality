@@ -171,26 +171,36 @@ class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerV
     }
 
     fun removeItem(position: Int, viewHolder: RecyclerView.ViewHolder) {
-        if (markerList[position] is AudioMarker) {
-            removedItem = markerList[position] as AudioMarker
-            val newRemovedItem = removedItem as AudioMarker
-            newRemovedItem.audio_id?.let { Database.dbViewModel!!.deleteMarker(it, "audio") }
-        } else if (markerList[position] is ARMarker) {
-            removedItem = markerList[position] as ARMarker
-            val newRemovedItem = removedItem as ARMarker
-            newRemovedItem.ar_id?.let { Database.dbViewModel!!.deleteMarker(it, "ar") }
-        }
+        removedItem = markerList[position]
         removedPosition = position
 
+        //Remove item in UI
         markerList.removeAt(position)
         notifyItemRemoved(position)
 
-
         Snackbar.make(viewHolder.itemView, "$removedItem removed", Snackbar.LENGTH_LONG)
             .setAction("UNDO") {
-                /*markerList.add(removedPosition, removedItem)
-                notifyItemInserted(removedPosition)*/
-            }.show()
+                //If undone, add to UI
+                markerList.add(removedPosition, removedItem)
+                notifyItemInserted(removedPosition)
+            }
+            .addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(snackbar:Snackbar, event:Int) {
+                    //Only remove item in database on Snackbar timeout
+                    if (event == DISMISS_EVENT_TIMEOUT) {
+                        if (removedItem is AudioMarker) {
+                            val newRemovedItem = removedItem as AudioMarker
+                            newRemovedItem.audio_id?.let {
+                                Database.dbViewModel!!.deleteMarker(it, "audio") }
+                        } else if (removedItem is ARMarker) {
+                            val newRemovedItem = removedItem as ARMarker
+                            newRemovedItem.ar_id?.let {
+                                Database.dbViewModel!!.deleteMarker(it, "ar") }
+                        }
+                    }
+                }
+            } )
+            .show()
     }
 
     override fun getItemCount() = markerList.size

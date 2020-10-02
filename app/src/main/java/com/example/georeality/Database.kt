@@ -43,7 +43,7 @@ class DBViewModel : ViewModel() {
         _audioMarkers.value = ArrayList()
         _arMarkers.value = ArrayList()
 
-        // Implement logic when a new audio marker is added
+        /* Implement logic when a new audio marker is added
         val audioMarkerListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("AudioDataAmount", snapshot.childrenCount.toString())
@@ -60,26 +60,69 @@ class DBViewModel : ViewModel() {
             }
 
         }
-        dbAudio.child("audio").addValueEventListener(audioMarkerListener)
+        dbAudio.child("audio").addValueEventListener(audioMarkerListener)*/
 
-        // Implement logic when new AR marker is added
-        val arMarkerListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("ArDataAmount", snapshot.childrenCount.toString())
-                for (marker in snapshot.children) {
-                    val markerClass = marker.getValue<ARMarker>()
-                    if (markerClass != null) {
-                        _arMarkers.value?.add(markerClass)
-                        _arMarkers.value = _arMarkers.value
-                    }
+        val audioMarkerListener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val markerClass = snapshot.getValue<AudioMarker>()
+                if (markerClass != null) {
+                    _audioMarkers.value?.add(markerClass)
+                    _audioMarkers.value = _audioMarkers.value
+
                 }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val markerClass = snapshot.getValue<AudioMarker>()
+                if (markerClass != null) {
+                    _audioMarkers.value?.remove(markerClass)
+                    _audioMarkers.value = _audioMarkers.value
+
+                }
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
             }
 
             override fun onCancelled(error: DatabaseError) {
             }
 
         }
-        dbAR.child("ar").addValueEventListener(arMarkerListener)
+        dbAudio.child("audio").addChildEventListener(audioMarkerListener)
+
+        // Implement logic when new AR marker is added
+        val arMarkerListener = object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                val markerClass = snapshot.getValue<ARMarker>()
+                if (markerClass != null) {
+                    _arMarkers.value?.add(markerClass)
+                    _arMarkers.value = _arMarkers.value
+
+                }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                val markerClass = snapshot.getValue<ARMarker>()
+                if (markerClass != null) {
+                    _arMarkers.value?.remove(markerClass)
+                    _arMarkers.value = _arMarkers.value
+
+                }
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        }
+        dbAR.child("ar").addChildEventListener(arMarkerListener)
 
     }
 
@@ -136,7 +179,7 @@ class DBViewModel : ViewModel() {
                 Log.d("File", "File could not be deleted!")
             }
         } else if (type == "ar") {
-            dbAR.child(id).setValue(null)
+            dbAR.child("ar").child(id).setValue(null)
         }
     }
 
