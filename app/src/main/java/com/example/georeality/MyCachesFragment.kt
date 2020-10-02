@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.ktx.Firebase
 
 
 class MyCachesFragment : Fragment() {
@@ -30,15 +29,9 @@ class MyCachesFragment : Fragment() {
     private lateinit var deleteIcon: Drawable
     private lateinit var colorDrawableBackground: ColorDrawable
     private var user : FirebaseUser? = null
-    private var dataset = mutableListOf("Item 1", "Item 2", "Item 3")
     private var audioMarkersList : MutableList<AudioMarker> = ArrayList()
     private var arMarkersList : MutableList<ARMarker> = ArrayList()
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private var markerList : MutableList<Any> = ArrayList()
 
 
     override fun onCreateView(
@@ -48,7 +41,7 @@ class MyCachesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_my_caches, container, false)
         viewManager = LinearLayoutManager(requireActivity())
-        viewAdapter = RecyclerViewAdapter(dataset)
+        viewAdapter = RecyclerViewAdapter(markerList)
         deleteIcon = ContextCompat.getDrawable(requireActivity().baseContext, R.drawable.ic_delete)!!
         colorDrawableBackground = ColorDrawable(Color.parseColor("#ff0000"))
 
@@ -121,16 +114,18 @@ class MyCachesFragment : Fragment() {
         //Setup marker observers
         Database.dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, {
             for (i in it.indices) {
-                if (it[i].creator == user!!.displayName) {
+                if (it[i].creator == user!!.email) {
                     audioMarkersList.add(it[i])
+                    markerList.add(it[i])
                 }
             }
             Log.d("AUDIOLIST", audioMarkersList.toString())
         })
         Database.dbViewModel!!.arMarkers.observe(viewLifecycleOwner, {
             for (i in it.indices) {
-                if (it[i].creator == user!!.displayName) {
+                if (it[i].creator == user!!.email) {
                     arMarkersList.add(it[i])
+                    markerList.add(it[i])
                 }
             }
             Log.d("ARLIST", arMarkersList.toString())
@@ -141,13 +136,14 @@ class MyCachesFragment : Fragment() {
     }
 }
 
-class RecyclerViewAdapter(private val dataset: MutableList<String>) : RecyclerView.Adapter<RecyclerViewAdapter.MainViewHolder>() {
-
+class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerView.Adapter<RecyclerViewAdapter.MainViewHolder>() {
     private var removedPosition: Int = 0
-    private var removedItem: String = ""
+    private lateinit var removedItem: Any
 
     class MainViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val title: TextView = v.findViewById(R.id.caches_textView)
+        val title: TextView = v.findViewById(R.id.cachesTitle)
+        val type: TextView = v.findViewById(R.id.cachesType)
+        val latLon: TextView = v.findViewById(R.id.cachesLatLon)
     }
 
     override fun onCreateViewHolder(
@@ -160,23 +156,42 @@ class RecyclerViewAdapter(private val dataset: MutableList<String>) : RecyclerVi
     }
 
     override fun onBindViewHolder(viewHolder: MainViewHolder, position: Int) {
-        viewHolder.title.text = dataset[position]
+        if (markerList[position] is AudioMarker) {
+            val audioMarker = markerList[position] as AudioMarker
+            viewHolder.title.text = audioMarker.title
+            viewHolder.type.text = "Audio"
+            viewHolder.latLon.text = "Lat: ${audioMarker.latitude}, lon: ${audioMarker.longitude}"
+        }
+        else if (markerList[position] is ARMarker) {
+            val arMarker = markerList[position] as ARMarker
+            viewHolder.title.text = arMarker.title
+            viewHolder.type.text = "AR"
+            viewHolder.latLon.text = "Lat: ${arMarker.latitude}, lon: ${arMarker.longitude}"
+        }
     }
 
     fun removeItem(position: Int, viewHolder: RecyclerView.ViewHolder) {
-        removedItem = dataset[position]
+        if (markerList[position] is AudioMarker) {
+            removedItem = markerList[position] as AudioMarker
+            val newRemovedItem = removedItem as AudioMarker
+            newRemovedItem.audio_id?.let { Database.dbViewModel!!.deleteMarker(it, "audio") }
+        } else if (markerList[position] is ARMarker) {
+            removedItem = markerList[position] as ARMarker
+            val newRemovedItem = removedItem as ARMarker
+            newRemovedItem.ar_id?.let { Database.dbViewModel!!.deleteMarker(it, "ar") }
+        }
         removedPosition = position
 
-        dataset.removeAt(position)
+        markerList.removeAt(position)
         notifyItemRemoved(position)
+
 
         Snackbar.make(viewHolder.itemView, "$removedItem removed", Snackbar.LENGTH_LONG)
             .setAction("UNDO") {
-                dataset.add(removedPosition, removedItem)
-                notifyItemInserted(removedPosition)
-
+                /*markerList.add(removedPosition, removedItem)
+                notifyItemInserted(removedPosition)*/
             }.show()
     }
 
-    override fun getItemCount() = dataset.size
+    override fun getItemCount() = markerList.size
 }

@@ -97,9 +97,18 @@ class DBViewModel : ViewModel() {
         tempDbAudio.setValue(newAudioMarker)
     }
 
-    fun addNewARMarker(arMarker : ARMarker) {
+    fun addNewARMarker(user : String?,
+                       latitude: Double?,
+                       longitude : Double?,
+                       title : String?,
+                       type : String?,
+                       displayText : String?,
+                       model_type : String?
+                       ) {
         val tempDbAR = dbAR.child("ar").push()
-        tempDbAR.setValue(arMarker)
+        val markerID = tempDbAR.key
+        val newArMarker = ARMarker(user, latitude, longitude, title, type, displayText, model_type, markerID)
+        tempDbAR.setValue(newArMarker)
 
     }
 
@@ -118,8 +127,9 @@ class DBViewModel : ViewModel() {
 
     fun deleteMarker(id : String, type : String) {
         if (type == "audio") {
-            dbAudio.child(id).setValue(null)
+            dbAudio.child("audio").child(id).setValue(null)
             val trackToDeleteReference = dbStorage.reference.child(id)
+            Log.d("FilePath", id.toString())
             trackToDeleteReference.delete().addOnSuccessListener {
                 Log.d("File", "File deleted succesfully!")
             }.addOnFailureListener {
@@ -161,6 +171,6 @@ data class ARMarker(
     var title : String? = "",
     var type : String? = "",
     var text : String? = "",
-    var model_type : String? = ""
-
+    var model_type : String? = "",
+    var ar_id : String? = ""
 )

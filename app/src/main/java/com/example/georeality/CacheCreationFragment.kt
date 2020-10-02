@@ -99,7 +99,6 @@ class CacheCreationFragment : Fragment() {
             val spinnerType = spinner.selectedItem.toString()
             Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}, location: ${location}")
             submitCache()
-            navController.navigate(R.id.mapFragment)
         }
 
         recordButton.setOnClickListener {
@@ -200,6 +199,7 @@ class CacheCreationFragment : Fragment() {
      */
     private fun formIsValid() : Boolean {
         //Check if title is empty
+        Log.d("Validation", titleTextInput.text.toString())
         if (titleTextInput.text.toString() == "") {
             Toast.makeText(requireActivity(), "Title cannot be empty!", Toast.LENGTH_SHORT).show()
             return false
@@ -262,40 +262,35 @@ class CacheCreationFragment : Fragment() {
 
                 //2D text is selected
                 if (type == getString(R.string.ar_type_2d)) {
-                    val newARMarker = ARMarker(
+                    Database.dbViewModel!!.addNewARMarker(
                         user,
                         latitude.toDouble(),
                         longitude.toDouble(),
                         title,
                         type,
                         displayText,
-                        null
-                    )
-                    Log.d("2D ARMarker", newARMarker.toString())
-                    Database.dbViewModel!!.addNewARMarker(newARMarker)
+                        null)
                 }
 
                 //3D model is selected
                 if (type == getString(R.string.ar_type_3d)) {
                     val model = spinnerModels.selectedItem.toString()
-                    val newARMarker = ARMarker(
-                        user,
+                    Database.dbViewModel!!.addNewARMarker(user,
                         latitude.toDouble(),
                         longitude.toDouble(),
                         title,
                         type,
                         null,
-                        model
-                    )
-                    Log.d("3D ARMarker", newARMarker.toString())
-                    Database.dbViewModel!!.addNewARMarker(newARMarker)
+                        model)
                 }
+                navController.navigate(R.id.mapFragment)
 
             }
             //Audio is selected
             else if (switchIsOn) {
                 Log.d("AudioFile", file.toString())
                 Database.dbViewModel!!.addNewAudioMarker(user, latitude.toDouble(), longitude.toDouble(), title, file!!)
+                navController.navigate(R.id.mapFragment)
             }
         }
     }
