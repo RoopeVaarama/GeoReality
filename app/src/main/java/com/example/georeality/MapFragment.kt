@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_map.*
 
 /**
@@ -82,7 +83,22 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             if (dist < 15.0) {
                 Log.d("marker", "onclick in range")
                 Log.d("marker", "distance to marker: ${dist} meters")
-                navController.navigate(R.id.arFragment)
+
+                //Convert attached data class to JSON for passing data to fragment
+                val gson = Gson()
+                if (marker.tag is ARMarker) {
+                    val markerClass = marker.tag as ARMarker
+                    val markerJsonString = gson.toJson(markerClass)
+                    Log.d("Tags", markerClass.toString())
+                    val action = MapFragmentDirections.actionMapFragmentToCacheEntityFragment(markerJsonString, "ar")
+                    navController.navigate(action)
+                } else if (marker.tag is AudioMarker) {
+                    val markerClass = marker.tag as AudioMarker
+                    val markerJsonString = gson.toJson(markerClass)
+                    Log.d("Tags", markerJsonString)
+                    val action = MapFragmentDirections.actionMapFragmentToCacheEntityFragment(markerJsonString, "audio")
+                    navController.navigate(action)
+                }
             } else {
                 marker.showInfoWindow()
                 Toast.makeText(
@@ -162,7 +178,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                         .position(LatLng(it[i].latitude!!, it[i].longitude!!))
                         .title(it[i].title)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                )
+                ).tag = it[i]
             }
 
         })
@@ -175,7 +191,8 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                     MarkerOptions()
                         .position(LatLng(it[i].latitude!!, it[i].longitude!!))
                         .title(it[i].title)
-                )}
+                ).tag = it[i]
+            }
         })
     }
 

@@ -33,5 +33,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="nav_menu_item_info" translatable="false">Info</string>
+    <string name="cache_entity_title" translatable="false">title</string>
+    <string name="cache_entity_creator" translatable="false">creator</string>
+    <string name="cache_entity_type" translatable="false">type</string>
+    <string name="cache_entity_button">Open cache</string>
+    <string name="cache_entity_AR_type" translatable="false">AR cache</string>
+    <string name="cache_entity_audio_type">Audio cache</string>
 
 </resources>
