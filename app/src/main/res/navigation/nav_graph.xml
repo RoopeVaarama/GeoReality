@@ -17,13 +17,11 @@
             android:id="@+id/action_mapFragment_to_myCachesFragment2"
             app:destination="@id/myCachesFragment" />
         <action
-            android:id="@+id/action_mapFragment_to_cacheEntityFragment"
-            app:destination="@id/cacheEntityFragment">
-            <argument
-                android:name="dataClassJson"
-                app:argType="string"
-                android:defaultValue='""' />
-        </action>
+            android:id="@+id/action_mapFragment_to_arFragment"
+            app:destination="@id/arFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_audioListeningFragment"
+            app:destination="@id/audioListeningFragment" />
     </fragment>
     <fragment
         android:id="@+id/cacheCreationFragment"
@@ -60,23 +58,18 @@
         android:name="com.example.georeality.ArFragment"
         android:label="fragment_ar"
         tools:layout="@layout/fragment_ar" >
+        <argument
+            android:name="arMarkerJson"
+            app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/cacheEntityFragment"
-        android:name="com.example.georeality.CacheEntityFragment"
-        android:label="fragment_cache_entity"
-        tools:layout="@layout/fragment_cache_entity" >
-        <action
-            android:id="@+id/action_cacheEntityFragment_to_arFragment"
-            app:destination="@id/arFragment" />
+        android:id="@+id/audioListeningFragment"
+        android:name="com.example.georeality.AudioListeningFragment"
+        android:label="fragment_audio_listening"
+        tools:layout="@layout/fragment_audio_listening" >
         <argument
-            android:name="dataClassJson"
-            app:argType="string"
-            android:defaultValue='""' />
-        <argument
-            android:name="dataClasstype"
-            app:argType="string"
-            android:defaultValue="ar" />
+            android:name="audioMarkerJson"
+            app:argType="string" />
     </fragment>
 
 </navigation>

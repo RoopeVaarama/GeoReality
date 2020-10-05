@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_map.*
 
@@ -73,6 +74,40 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         googleMap.setOnMyLocationClickListener(this)
         enableMyLocation()
         loadEntitys()
+        map.setInfoWindowAdapter(CustomInfoWindowAdapter(requireActivity()))
+        map.setOnInfoWindowClickListener { marker ->
+            var startPoint = lastLocation
+            var endPoint: Location = Location(LocationManager.GPS_PROVIDER)
+            endPoint.latitude = marker.position.latitude
+            endPoint.longitude = marker.position.longitude
+            var dist = startPoint.distanceTo(endPoint)
+
+            if (dist < 15.0) {
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(R.string.cache_dialog_title)
+                    .setMessage(resources.getString(R.string.cache_dialog_message))
+                    .setNegativeButton(resources.getString(R.string.cache_dialog_cancel)) { dialog, which ->
+                        return@setNegativeButton
+                    }
+                    .setPositiveButton(resources.getString(R.string.cache_dialog_open)) { dialog, which ->
+                        val gson = Gson()
+                        if (marker.tag is ARMarker) {
+                            val markerClass = marker.tag as ARMarker
+                            val markerJsonString = gson.toJson(markerClass)
+                            Log.d("Tags", markerClass.toString())
+                            val action = MapFragmentDirections.actionMapFragmentToArFragment(markerJsonString)
+                            navController.navigate(action)
+                        } else if (marker.tag is AudioMarker) {
+                            val markerClass = marker.tag as AudioMarker
+                            val markerJsonString = gson.toJson(markerClass)
+                            Log.d("Tags", markerJsonString)
+                            val action = MapFragmentDirections.actionMapFragmentToAudioListeningFragment(markerJsonString)
+                            navController.navigate(action)
+                        }
+                    }
+                    .show()
+            }
+        }
         map.setOnMarkerClickListener { marker ->
             var startPoint = lastLocation
             var endPoint: Location = Location(LocationManager.GPS_PROVIDER)
@@ -83,23 +118,10 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             if (dist < 15.0) {
                 Log.d("marker", "onclick in range")
                 Log.d("marker", "distance to marker: ${dist} meters")
-
-                //Convert attached data class to JSON for passing data to fragment
-                val gson = Gson()
-                if (marker.tag is ARMarker) {
-                    val markerClass = marker.tag as ARMarker
-                    val markerJsonString = gson.toJson(markerClass)
-                    Log.d("Tags", markerClass.toString())
-                    val action = MapFragmentDirections.actionMapFragmentToCacheEntityFragment(markerJsonString, "ar")
-                    navController.navigate(action)
-                } else if (marker.tag is AudioMarker) {
-                    val markerClass = marker.tag as AudioMarker
-                    val markerJsonString = gson.toJson(markerClass)
-                    Log.d("Tags", markerJsonString)
-                    val action = MapFragmentDirections.actionMapFragmentToCacheEntityFragment(markerJsonString, "audio")
-                    navController.navigate(action)
-                }
+                marker.snippet = "Click here to open cache!"
+                marker.showInfoWindow()
             } else {
+                marker.snippet = "Too far away!"
                 marker.showInfoWindow()
                 Toast.makeText(
                     requireActivity().applicationContext,
@@ -178,6 +200,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                         .position(LatLng(it[i].latitude!!, it[i].longitude!!))
                         .title(it[i].title)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .snippet("${it[i].creator} \n asdasd")
                 ).tag = it[i]
             }
 
@@ -191,6 +214,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                     MarkerOptions()
                         .position(LatLng(it[i].latitude!!, it[i].longitude!!))
                         .title(it[i].title)
+                        .snippet("${it[i].creator} \n asdasd")
                 ).tag = it[i]
             }
         })

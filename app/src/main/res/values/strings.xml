@@ -39,5 +39,10 @@
     <string name="cache_entity_button">Open cache</string>
     <string name="cache_entity_AR_type" translatable="false">AR cache</string>
     <string name="cache_entity_audio_type">Audio cache</string>
+    <string name="map_info_window_open_ar">Open cache</string>
+    <string name="cache_dialog_title">Opening cache</string>
+    <string name="cache_dialog_message">You are about to open a cache. Do you want to proceed?</string>
+    <string name="cache_dialog_cancel">Cancel</string>
+    <string name="cache_dialog_open">Open</string>
 
 </resources>
