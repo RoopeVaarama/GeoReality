@@ -82,7 +82,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             if (dist < 15.0) {
                 Log.d("marker", "onclick in range")
                 Log.d("marker", "distance to marker: ${dist} meters")
-                navController.navigate(R.id.entityFragment)
+                navController.navigate(R.id.arFragment)
             } else {
                 marker.showInfoWindow()
                 Toast.makeText(

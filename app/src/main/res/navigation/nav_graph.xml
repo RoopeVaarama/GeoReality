@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_mapFragment_to_myCachesFragment2"
             app:destination="@id/myCachesFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_arFragment"
+            app:destination="@id/arFragment" />
     </fragment>
     <fragment
         android:id="@+id/cacheCreationFragment"
@@ -46,18 +49,15 @@
         <action
             android:id="@+id/action_infoFragment_to_myCachesFragment"
             app:destination="@id/myCachesFragment" />
-        <action
-            android:id="@+id/action_infoFragment_to_entityFragment2"
-            app:destination="@id/entityFragment" />
     </fragment>
     <fragment
-        android:id="@+id/entityFragment"
-        android:name="com.example.georeality.EntityFragment"
-        android:label="fragment_entity"
-        tools:layout="@layout/fragment_entity" >
+        android:id="@+id/arFragment"
+        android:name="com.example.georeality.ArFragment"
+        android:label="fragment_ar"
+        tools:layout="@layout/fragment_ar" >
         <action
-            android:id="@+id/action_entityFragment_to_infoFragment2"
-            app:destination="@id/infoFragment" />
+            android:id="@+id/action_arFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
 
 </navigation>
