@@ -148,7 +148,7 @@ class ArFragment : Fragment() {
     //A method to find the screen center. This is used while placing objects in the scene
     private fun Frame.screenCenter(): Vector3 {
         val vw = view?.findViewById<View>(R.id.sceneform_fragment)
-        return Vector3(vw?.width!! / 2f, vw?.height!! / 2f, 0f)
+        return Vector3(vw?.width!! / 2f, vw.height / 2f, 0f)
     }
 
     /**
