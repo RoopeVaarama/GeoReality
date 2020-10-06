@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -84,10 +83,10 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.cache_dialog_title)
                     .setMessage(resources.getString(R.string.cache_dialog_message))
-                    .setNegativeButton(resources.getString(R.string.cache_dialog_cancel)) { dialog, which ->
+                    .setNegativeButton(resources.getString(R.string.cache_dialog_cancel)) { _, _ ->
                         return@setNegativeButton
                     }
-                    .setPositiveButton(resources.getString(R.string.cache_dialog_open)) { dialog, which ->
+                    .setPositiveButton(resources.getString(R.string.cache_dialog_open)) { _, _ ->
                         val gson = Gson()
                         if (marker.tag is ARMarker) {
                             val markerClass = marker.tag as ARMarker
@@ -115,18 +114,14 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
             if (dist < 15.0) {
                 Log.d("marker", "onclick in range")
-                Log.d("marker", "distance to marker: ${dist} meters")
+                Log.d("marker", "distance to marker: $dist meters")
                 marker.snippet = "Click here to open cache!"
                 marker.showInfoWindow()
             } else {
                 marker.snippet = "Too far away!"
                 marker.showInfoWindow()
-                Toast.makeText(
-                    requireActivity().applicationContext,
-                    "You are ${dist} meters away from the marker you have to be less than 15 meters away to open cachegit",
-                    Toast.LENGTH_LONG).show()
                 Log.d("marker", "onclick")
-                Log.d("marker", "distance to marker: ${dist} meters")
+                Log.d("marker", "distance to marker: $dist meters")
             }
             true
         }
@@ -171,11 +166,11 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 val currentLatLng = LatLng(location.latitude, location.longitude)
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
             }
-            Toast.makeText(
+            /*Toast.makeText(
                 requireActivity().applicationContext,
                 "Current location:${lastLocation.latitude} ${lastLocation.longitude}",
                 Toast.LENGTH_LONG
-            ).show()
+            ).show()*/
             val locationdata = "${lastLocation.latitude}, ${lastLocation.longitude}"
             val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
             val editor = sharedPref?.edit()
@@ -220,14 +215,14 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     }
 
     override fun onMyLocationButtonClick(): Boolean {
-        Toast.makeText(requireActivity().applicationContext, "MyLocation button clicked", Toast.LENGTH_LONG).show()
+        //Toast.makeText(requireActivity().applicationContext, "MyLocation button clicked", Toast.LENGTH_LONG).show()
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false
     }
 
     override fun onMyLocationClick(location: Location) {
-        Toast.makeText(requireActivity().applicationContext, "Current locatin:\n$location", Toast.LENGTH_LONG).show()
+        //Toast.makeText(requireActivity().applicationContext, "Current locatin:\n$location", Toast.LENGTH_LONG).show()
 
     }
 

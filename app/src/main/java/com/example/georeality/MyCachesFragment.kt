@@ -36,8 +36,6 @@ class MyCachesFragment : Fragment() {
     private var arMarkersList : MutableList<ARMarker> = ArrayList()
     private var markerList : MutableList<Any> = ArrayList()
 
-
-    //onCreateView function
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

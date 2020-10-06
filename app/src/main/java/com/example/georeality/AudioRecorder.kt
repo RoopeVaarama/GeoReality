@@ -16,8 +16,10 @@ import java.time.LocalTime
  */
 class AudioRecorder {
     private lateinit var recFile : File
-    var recording : Boolean = false
+    private var recording : Boolean = false
 
+    /** Function to record the audio
+     */
     fun recordAudio(activity : Activity): File? {
         val file = "record.raw"
         val storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_MUSIC)
@@ -26,7 +28,7 @@ class AudioRecorder {
             recFile = File("$storageDir/$file")
         } catch (e: Exception) {
             Log.d("error", "error creating file: ${e.message}")
-    }
+        }
 
         try {
             val outputStream = FileOutputStream(recFile)
@@ -74,10 +76,13 @@ class AudioRecorder {
         return null
     }
 
+    /** Function to stop recording
+     */
     fun stopRecording() {
         recording = false
     }
-
+    /** Function to play the recording
+     */
     fun playAudio(istream : InputStream) : String {
         Log.d("PlayAudio", "Playing audio...")
         val minBufferSize= AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_STEREO,

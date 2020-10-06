@@ -15,7 +15,6 @@ class CustomInfoWindowAdapter(context: Context) : GoogleMap.InfoWindowAdapter {
     @SuppressLint("InflateParams")
     private val mWindow : View =
         LayoutInflater.from(context).inflate(R.layout.maps_custom_info_window, null)
-    private val mContext: Context = context
     private var arMarker : ARMarker? = null
     private var audioMarker : AudioMarker? = null
 
@@ -28,12 +27,12 @@ class CustomInfoWindowAdapter(context: Context) : GoogleMap.InfoWindowAdapter {
         if (marker.tag is ARMarker) {
             arMarker = marker.tag as ARMarker
             titleView.text = arMarker!!.title
-            typeView.text = mContext.getString(R.string.ar)
+            typeView.text = view.context.getString(R.string.ar)
             creatorView.text = arMarker!!.creator
         } else if (marker.tag is AudioMarker) {
             audioMarker = marker.tag as AudioMarker
             titleView.text = audioMarker!!.title
-            typeView.text = mContext.getString(R.string.audio)
+            typeView.text = view.context.getString(R.string.audio)
             creatorView.text = audioMarker!!.creator
         }
         distanceView.text = marker.snippet

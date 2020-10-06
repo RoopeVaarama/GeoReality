@@ -63,7 +63,7 @@ class CacheCreationFragment : Fragment() {
         val recordButton: Button = view.findViewById(R.id.recordButton)
         val playButton : Button = view.findViewById(R.id.playButton)
         val timer : Chronometer = view.findViewById(R.id.timerView)
-        var recording: Boolean = false
+        var recording = false
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         location = sharedPref?.getString("locationData", "defaultLocation")
 
@@ -94,7 +94,6 @@ class CacheCreationFragment : Fragment() {
                 }
             }
         }
-
 
         saveButton.setOnClickListener {
             val cacheType = typeSwitch.text.toString()
@@ -127,11 +126,11 @@ class CacheCreationFragment : Fragment() {
                 }
             }
         }
+
         playButton.setOnClickListener {
             playRecording(timer)
         }
 
-        //ArrayAdapter for type spinner
         ArrayAdapter.createFromResource(
             requireActivity().applicationContext,
             R.array.type_array,
@@ -141,7 +140,6 @@ class CacheCreationFragment : Fragment() {
             spinner.adapter = adapter
         }
 
-        //ArrayAdapter for models spinner
         ArrayAdapter.createFromResource(
             requireActivity().applicationContext,
             R.array.model_array,
@@ -151,23 +149,19 @@ class CacheCreationFragment : Fragment() {
             spinnerModels.adapter = adapter
         }
 
-        val spinnerItems = resources.getStringArray(R.array.type_array)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 //2D text is selected
                 if (pos == 0){
-                    Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
                     arTextInput.visibility = View.VISIBLE
                     spinnerModels.visibility = View.GONE
                 }
                 //3D models is selected
                 if (pos == 1){
-                    Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
                     arTextInput.visibility = View.GONE
                     spinnerModels.visibility = View.VISIBLE
                 }
             }
-
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
         }
@@ -181,26 +175,24 @@ class CacheCreationFragment : Fragment() {
         //Check if title is empty
         Log.d("Validation", titleTextInput.text.toString())
         if (titleTextInput.text.toString() == "") {
-            Toast.makeText(requireActivity(), "Title cannot be empty!", Toast.LENGTH_SHORT).show()
             return false
         }
         //Check if location is available
         if (location == null) {
-            Toast.makeText(requireActivity(), "Could not get current location!", Toast.LENGTH_SHORT).show()
             return false
         }
 
         //Check if type specific fields are empty
         if (switchIsOn) {
             return if (file == null) {
-                Toast.makeText(requireActivity(), "Audio must be recorded!", Toast.LENGTH_SHORT).show()
+                Log.d("audio", "Audio must be recorded!")
                 false
             } else {
                 true
             }
         } else if (!switchIsOn) {
             return if (arTextInput.text.toString() == "" && spinner.selectedItem.toString() == getString(R.string.ar_type_2d)) {
-                Toast.makeText(requireActivity(), "AR text cannot be empty!", Toast.LENGTH_SHORT).show()
+                Log.d("audio", "AR text cannot be empty!")
                 false
             } else {
                 true

@@ -6,7 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-//InfoFragment class
+/**
+ * @author Roope Vaarama, Topias Peiponen
+ * @since 01.10.2020
+ */
+
 class InfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

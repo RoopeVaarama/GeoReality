@@ -3,13 +3,11 @@ package com.example.georeality
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.navigation.fragment.navArgs
 import com.google.ar.core.Frame
 import com.google.ar.core.Plane
@@ -17,7 +15,6 @@ import com.google.ar.core.Pose
 import com.google.ar.core.TrackingState
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.FrameTime
-import com.google.ar.sceneform.Scene
 import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
@@ -26,10 +23,9 @@ import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.view_renderable_text.view.*
-import java.net.URI
 
-
-//ArFragment class
+/** ArFragment class
+ */
 class ArFragment : Fragment() {
     private val args : ArFragmentArgs by navArgs()
     private var modelRenderable1 : ModelRenderable? = null
@@ -85,6 +81,10 @@ class ArFragment : Fragment() {
         }
 
     }
+
+    /**
+     * onUpdateFrame function to create ar renderable after the plane ground has been detected
+     */
     private fun onUpdateFrame(frameTime: FrameTime?) {
         //get the frame from the scene for shorthand
         val frame = fragment.arSceneView.arFrame
@@ -121,17 +121,20 @@ class ArFragment : Fragment() {
                             val anchorNode = AnchorNode(modelAnchor)
                             anchorNode.setParent(fragment.arSceneView.scene)
 
-                            //create a new TranformableNode that will carry our object
+                            //create a new TransformableNode that will carry our object
                             val transformableNode = TransformableNode(fragment.transformationSystem)
                             transformableNode.setParent(anchorNode)
-                            if (arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
-                                transformableNode.renderable = this@ArFragment.modelRenderable1
-                            }
-                            else if(arMarkerClass.model_type == getString(R.string.cache_model_avocado)) {
-                                transformableNode.renderable = this@ArFragment.modelRenderable2
+                            when {
+                                arMarkerClass.model_type == getString(R.string.cache_model_duck) -> {
+                                    transformableNode.renderable = this@ArFragment.modelRenderable1
+                                }
+                                arMarkerClass.model_type == getString(R.string.cache_model_avocado) -> {
+                                    transformableNode.renderable = this@ArFragment.modelRenderable2
 
-                            } else if (arMarkerClass.type == getString(R.string.ar_type_2d)){
-                                transformableNode.renderable = this@ArFragment.viewRenderable
+                                }
+                                arMarkerClass.type == getString(R.string.ar_type_2d) -> {
+                                    transformableNode.renderable = this@ArFragment.viewRenderable
+                                }
                             }
 
                             //Alter the real world position to ensure object renders on the table top. Not somewhere inside.
@@ -145,7 +148,8 @@ class ArFragment : Fragment() {
         }
     }
 
-    //A method to find the screen center. This is used while placing objects in the scene
+    /** A method to find the screen center. This is used while placing objects in the scene
+     */
     private fun Frame.screenCenter(): Vector3 {
         val vw = view?.findViewById<View>(R.id.sceneform_fragment)
         return Vector3(vw?.width!! / 2f, vw.height / 2f, 0f)
@@ -158,7 +162,7 @@ class ArFragment : Fragment() {
         val renderableFuture = ViewRenderable.builder()
             .setView(mContext, R.layout.view_renderable_text)
             .build()
-        renderableFuture.thenAccept {it ->
+        renderableFuture.thenAccept {
             it.view.viewRenderableText.text = displayText
             viewRenderable = it }
     }
@@ -182,7 +186,7 @@ class ArFragment : Fragment() {
                 )
                 .setRegistryId(getString(R.string.cache_model_duck))
                 .build()
-            renderableFuture1.thenAccept { it -> modelRenderable1 = it }
+            renderableFuture1.thenAccept { modelRenderable1 = it }
             renderableFuture1.exceptionally {
                 Log.d("Renderable", "Unable to create renderable")
                 null
@@ -201,7 +205,7 @@ class ArFragment : Fragment() {
                 )
                 .setRegistryId(getString(R.string.cache_model_avocado))
                 .build()
-            renderableFuture2.thenAccept { it -> modelRenderable2 = it }
+            renderableFuture2.thenAccept { modelRenderable2 = it }
             renderableFuture2.exceptionally {
                 Log.d("Renderable", "Unable to create renderable")
                 null
