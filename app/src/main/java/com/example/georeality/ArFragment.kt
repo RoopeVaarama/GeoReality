@@ -33,8 +33,6 @@ class ArFragment : Fragment() {
     private var modelRenderable1 : ModelRenderable? = null
     private var modelRenderable2 : ModelRenderable? = null
     private var viewRenderable : ViewRenderable? = null
-    private var Renderable: ModelRenderable? = null
-    private var model3d: Boolean = false
     private lateinit var mContext : Context
     private lateinit var arMarkerClass : ARMarker
     private lateinit var fragment : ArFragment
@@ -67,7 +65,6 @@ class ArFragment : Fragment() {
         if (arMarkerClass.type == getString(R.string.ar_type_2d)) {
             if (arMarkerClass.text != null) {
                 createViewRenderable(arMarkerClass.text!!)
-                model3d = false
             }
         }
         else if (arMarkerClass.type == getString(R.string.ar_type_3d)) {
@@ -78,13 +75,10 @@ class ArFragment : Fragment() {
             //Model is duck
             if (arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
                 createModelRenderables(getString(R.string.cache_model_duck))
-                model3d = true
             }
             //Model is avocado
             else if (arMarkerClass.model_type == getString(R.string.cache_model_avocado)) {
                 createModelRenderables(getString(R.string.cache_model_avocado))
-                model3d = true
-
             }
         }
 
@@ -128,9 +122,13 @@ class ArFragment : Fragment() {
                             //create a new TranformableNode that will carry our object
                             val transformableNode = TransformableNode(fragment.transformationSystem)
                             transformableNode.setParent(anchorNode)
-                            if(model3d) {
-                                transformableNode.renderable = this@ArFragment.Renderable
-                            } else {
+                            if(arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
+                                transformableNode.renderable = this@ArFragment.modelRenderable1
+                            }
+                            else if(arMarkerClass.model_type == getString(R.string.cache_model_avocado)) {
+                                    transformableNode.renderable = this@ArFragment.modelRenderable2
+
+                            } else if (arMarkerClass.type == getString(R.string.ar_type_2d)){
                                 transformableNode.renderable = this@ArFragment.viewRenderable
                             }
 
@@ -148,7 +146,7 @@ class ArFragment : Fragment() {
     //A method to find the screen center. This is used while placing objects in the scene
     private fun Frame.screenCenter(): Vector3 {
         val vw = view?.findViewById<View>(R.id.sceneform_fragment)
-        return Vector3(vw?.width!! / 2f, vw?.height!! / 2f, 0f)
+        return Vector3(vw?.width!! / 2f, vw.height / 2f, 0f)
     }
 
     /**
@@ -187,7 +185,6 @@ class ArFragment : Fragment() {
                 Log.d("Renderable", "Unable to create renderable")
                 null
             }
-            Renderable = modelRenderable1
         }
         else if (modelType == getString(R.string.cache_model_avocado)) {
             val renderableFuture2 = ModelRenderable.builder()
@@ -207,7 +204,6 @@ class ArFragment : Fragment() {
                 Log.d("Renderable", "Unable to create renderable")
                 null
                 }
-            Renderable = modelRenderable2
         }
     }
 
