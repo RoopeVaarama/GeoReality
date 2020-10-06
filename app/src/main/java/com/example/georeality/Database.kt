@@ -1,20 +1,14 @@
 package com.example.georeality
 
-import android.icu.text.Transliterator
-import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageMetadata
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -172,7 +166,7 @@ class DBViewModel : ViewModel() {
         if (type == "audio") {
             dbAudio.child("audio").child(id).setValue(null)
             val trackToDeleteReference = dbStorage.reference.child(id)
-            Log.d("FilePath", id.toString())
+            Log.d("FilePath", id)
             trackToDeleteReference.delete().addOnSuccessListener {
                 Log.d("File", "File deleted succesfully!")
             }.addOnFailureListener {

@@ -7,11 +7,11 @@ import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 
-//CustomInfoWindowAdapter class
+/** CustomInfoWindowAdapter class
+ */
 class CustomInfoWindowAdapter(context: Context) : GoogleMap.InfoWindowAdapter {
     private val mWindow:View =
         LayoutInflater.from(context).inflate(R.layout.maps_custom_info_window, null)
-    private val mContext: Context = context
     private var arMarker : ARMarker? = null
     private var audioMarker : AudioMarker? = null
 

@@ -20,7 +20,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-//MyCachesFragment Class
+/** MyCachesFragment Class
+ */
 class MyCachesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -34,7 +35,8 @@ class MyCachesFragment : Fragment() {
     private var markerList : MutableList<Any> = ArrayList()
 
 
-    //onCreateView function
+    /** onCreateView function
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -140,7 +142,8 @@ class MyCachesFragment : Fragment() {
     }
 }
 
-//RecyclerViewAdapter class
+/** RecyclerViewAdapter class
+ */
 class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerView.Adapter<RecyclerViewAdapter.MainViewHolder>() {
     private var removedPosition: Int = 0
     private lateinit var removedItem: Any

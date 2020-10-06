@@ -30,15 +30,19 @@ import java.io.*
  * @since 24.09.2020
  */
 
-//CacheCreationFragment class
+/**CacheCreationFragment class
+ * Fragment where you create the new cache
+ */
 class CacheCreationFragment : Fragment() {
     private var file : File? = null
     private var audioRecorder : AudioRecorder? = null
-    private var Recording = false
+
     private var switchIsOn = false
     private var location : String? = null
     private lateinit var navController : NavController
 
+    /** onCreateView function
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,6 +58,8 @@ class CacheCreationFragment : Fragment() {
         return view
     }
 
+    /** setupLayout function
+     */
     private fun setupLayout(view : View) {
         val spinner: Spinner = view.findViewById(R.id.spinner)
         val spinnerModels : Spinner = view.findViewById(R.id.spinnerModels)
@@ -62,11 +68,11 @@ class CacheCreationFragment : Fragment() {
         val recordButton: Button = view.findViewById(R.id.recordButton)
         val playButton : Button = view.findViewById(R.id.playButton)
         val timer : Chronometer = view.findViewById(R.id.timerView)
-        var recording: Boolean = false
+        var recording = false
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         location = sharedPref?.getString("locationData", "defaultLocation")
 
-        typeSwitch.setOnCheckedChangeListener { compoundButton, b ->
+        typeSwitch.setOnCheckedChangeListener { _, b ->
             //AUDIO IS CHECKED
             if (b) {
                 typeSwitch.text = getString(R.string.audio)
@@ -94,7 +100,7 @@ class CacheCreationFragment : Fragment() {
             }
         }
 
-
+        //Save button onClickListener
         saveButton.setOnClickListener {
             val cacheType = typeSwitch.text.toString()
             val title = titleTextInput.text
@@ -102,7 +108,7 @@ class CacheCreationFragment : Fragment() {
             Log.d("save", "Save button was clicked cache type: ${cacheType}, title: ${title}, spinnertype: ${spinnerType}, location: ${location}")
             submitCache()
         }
-
+        //Record button onClickListener
         recordButton.setOnClickListener {
             if(!recording){
                 file = audioRecorder?.recordAudio(requireActivity())
@@ -126,6 +132,7 @@ class CacheCreationFragment : Fragment() {
                 }
             }
         }
+        //Play button onClickListener
         playButton.setOnClickListener {
             playRecording(timer)
         }
@@ -159,13 +166,13 @@ class CacheCreationFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 //2D text is selected
                 if (pos == 0){
-                    Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
                     arTextInput.visibility = View.VISIBLE
                     spinnerModels.visibility = View.GONE
                 }
                 //3D models is selected
                 if (pos == 1){
-                    Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireActivity(), "Selected item" + " " + spinnerItems[pos], Toast.LENGTH_SHORT).show()
                     arTextInput.visibility = View.GONE
                     spinnerModels.visibility = View.VISIBLE
                 }
@@ -203,26 +210,26 @@ class CacheCreationFragment : Fragment() {
         //Check if title is empty
         Log.d("Validation", titleTextInput.text.toString())
         if (titleTextInput.text.toString() == "") {
-            Toast.makeText(requireActivity(), "Title cannot be empty!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireActivity(), "Title cannot be empty!", Toast.LENGTH_SHORT).show()
             return false
         }
         //Check if location is available
         if (location == null) {
-            Toast.makeText(requireActivity(), "Could not get current location!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(requireActivity(), "Could not get current location!", Toast.LENGTH_SHORT).show()
             return false
         }
 
         //Check if type specific fields are empty
         if (switchIsOn) {
             return if (file == null) {
-                Toast.makeText(requireActivity(), "Audio must be recorded!", Toast.LENGTH_SHORT).show()
+                Log.d("audio", "Audio must be recorded!")
                 false
             } else {
                 true
             }
         } else if (!switchIsOn) {
             return if (arTextInput.text.toString() == "" && spinner.selectedItem.toString() == getString(R.string.ar_type_2d)) {
-                Toast.makeText(requireActivity(), "AR text cannot be empty!", Toast.LENGTH_SHORT).show()
+                Log.d("audio", "AR text cannot be empty!")
                 false
             } else {
                 true
@@ -315,6 +322,9 @@ class CacheCreationFragment : Fragment() {
     }
 }
 
+/** SpinnerActivity class
+ * for onItemSelected and onNothingSelected functions
+ */
 class SpinnerActivity: Activity(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
         val selection = parent?.getItemAtPosition(pos)

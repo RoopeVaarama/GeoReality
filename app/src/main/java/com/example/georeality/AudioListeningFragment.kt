@@ -24,7 +24,6 @@ class AudioListeningFragment : Fragment() {
     private var file : File? = null
     private var playing : Boolean = false
     private val audioRecorder = AudioRecorder()
-    private lateinit var timer : Chronometer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
