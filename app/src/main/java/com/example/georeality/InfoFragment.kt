@@ -11,6 +11,8 @@ import android.view.ViewGroup
  * Use the [InfoFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+//InfoFragment class
 class InfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

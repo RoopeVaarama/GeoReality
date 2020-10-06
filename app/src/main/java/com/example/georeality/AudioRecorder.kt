@@ -11,6 +11,7 @@ import java.io.*
 import java.lang.Exception
 import java.time.LocalTime
 
+//AudioRecorder class
 class AudioRecorder {
     private lateinit var recFile : File
     var recording : Boolean = false

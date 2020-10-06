@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 
+//CustomInfoWindowAdapter class
 class CustomInfoWindowAdapter(context: Context) : GoogleMap.InfoWindowAdapter {
     private val mWindow:View =
         LayoutInflater.from(context).inflate(R.layout.maps_custom_info_window, null)

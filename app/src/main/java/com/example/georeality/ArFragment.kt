@@ -28,6 +28,8 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.view_renderable_text.view.*
 import java.net.URI
 
+
+//ArFragment class
 class ArFragment : Fragment() {
     private val args : ArFragmentArgs by navArgs()
     private var modelRenderable1 : ModelRenderable? = null
@@ -89,7 +91,7 @@ class ArFragment : Fragment() {
         if (frame != null) {
             //get the trackables to ensure planes are detected
             val var3 = frame.getUpdatedTrackables(Plane::class.java).iterator()
-            while(var3.hasNext()) {
+            if(var3.hasNext()) {
                 val plane = var3.next() as Plane
 
                 //If a plane has been detected & is being tracked by ARCore

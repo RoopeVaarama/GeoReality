@@ -41,6 +41,7 @@ import kotlinx.android.synthetic.main.fragment_map.*
  * @since 24.09.2020
  */
 
+//MapFragment Class
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMyLocationClickListener, OnMapReadyCallback {
     private lateinit var navController : NavController

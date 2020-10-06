@@ -38,7 +38,6 @@ import kotlinx.android.synthetic.main.navigation_header_layout.view.*
 /**
  * MainActivity is the base activity, which contains the top navigation and map functionality
  */
-
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var navController : NavController
     private lateinit var mAuth: FirebaseAuth

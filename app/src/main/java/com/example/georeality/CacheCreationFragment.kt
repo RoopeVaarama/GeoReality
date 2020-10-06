@@ -29,6 +29,8 @@ import java.io.*
  * @author Topias Peiponen, Roope Vaarama
  * @since 24.09.2020
  */
+
+//CacheCreationFragment class
 class CacheCreationFragment : Fragment() {
     private var file : File? = null
     private var audioRecorder : AudioRecorder? = null

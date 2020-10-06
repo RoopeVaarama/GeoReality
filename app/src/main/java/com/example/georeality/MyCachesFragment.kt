@@ -20,7 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-
+//MyCachesFragment Class
 class MyCachesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -34,6 +34,7 @@ class MyCachesFragment : Fragment() {
     private var markerList : MutableList<Any> = ArrayList()
 
 
+    //onCreateView function
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,6 +54,7 @@ class MyCachesFragment : Fragment() {
         }
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
+            //onMove function
             override fun onMove(
                 p0: RecyclerView,
                 p1: RecyclerView.ViewHolder,
@@ -61,12 +63,14 @@ class MyCachesFragment : Fragment() {
                 return false
             }
 
+            //onSwipe function
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 (viewAdapter as RecyclerViewAdapter).removeItem(
                     viewHolder.adapterPosition,
                     viewHolder
                 )
             }
+            //onChildDraw function
             override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
@@ -136,6 +140,7 @@ class MyCachesFragment : Fragment() {
     }
 }
 
+//RecyclerViewAdapter class
 class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerView.Adapter<RecyclerViewAdapter.MainViewHolder>() {
     private var removedPosition: Int = 0
     private lateinit var removedItem: Any
@@ -146,6 +151,7 @@ class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerV
         val latLon: TextView = v.findViewById(R.id.cachesLatLon)
     }
 
+    //override onCreateViewHolder function
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         viewType: Int
@@ -155,6 +161,7 @@ class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerV
         return MainViewHolder(v)
     }
 
+    //Function to bind properties to layout
     override fun onBindViewHolder(viewHolder: MainViewHolder, position: Int) {
         if (markerList[position] is AudioMarker) {
             val audioMarker = markerList[position] as AudioMarker
@@ -170,6 +177,7 @@ class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerV
         }
     }
 
+    //Function to remove your own item from the recyclerview and database
     fun removeItem(position: Int, viewHolder: RecyclerView.ViewHolder) {
         removedItem = markerList[position]
         removedPosition = position
@@ -203,5 +211,6 @@ class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerV
             .show()
     }
 
+    //Function to get item count
     override fun getItemCount() = markerList.size
 }
