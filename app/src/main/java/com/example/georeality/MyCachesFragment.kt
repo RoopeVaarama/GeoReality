@@ -1,5 +1,6 @@
 package com.example.georeality
 
+import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -20,7 +21,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-//MyCachesFragment Class
+/**
+ * MyCachesFragment holds all the current users created cachces
+ */
 class MyCachesFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
@@ -42,7 +45,7 @@ class MyCachesFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_my_caches, container, false)
         viewManager = LinearLayoutManager(requireActivity())
-        viewAdapter = RecyclerViewAdapter(markerList)
+        viewAdapter = RecyclerViewAdapter(markerList, requireContext())
         deleteIcon = ContextCompat.getDrawable(requireActivity().baseContext, R.drawable.ic_delete)!!
         colorDrawableBackground = ColorDrawable(Color.parseColor("#ff0000"))
 
@@ -140,8 +143,7 @@ class MyCachesFragment : Fragment() {
     }
 }
 
-//RecyclerViewAdapter class
-class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerView.Adapter<RecyclerViewAdapter.MainViewHolder>() {
+class RecyclerViewAdapter(private val markerList : MutableList<Any>, private val mContext : Context) : RecyclerView.Adapter<RecyclerViewAdapter.MainViewHolder>() {
     private var removedPosition: Int = 0
     private lateinit var removedItem: Any
 
@@ -151,33 +153,33 @@ class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerV
         val latLon: TextView = v.findViewById(R.id.cachesLatLon)
     }
 
-    //override onCreateViewHolder function
     override fun onCreateViewHolder(
         viewGroup: ViewGroup,
         viewType: Int
-    ): RecyclerViewAdapter.MainViewHolder {
+    ): MainViewHolder {
         val v = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.my_caches_recycler_view_item, viewGroup, false)
         return MainViewHolder(v)
     }
 
-    //Function to bind properties to layout
     override fun onBindViewHolder(viewHolder: MainViewHolder, position: Int) {
         if (markerList[position] is AudioMarker) {
             val audioMarker = markerList[position] as AudioMarker
             viewHolder.title.text = audioMarker.title
-            viewHolder.type.text = "Audio"
-            viewHolder.latLon.text = "Lat: ${audioMarker.latitude}, lon: ${audioMarker.longitude}"
+            viewHolder.type.text = mContext.getString(R.string.audio)
+            viewHolder.latLon.text = mContext.getString(R.string.coordinate_string, audioMarker.latitude.toString(), audioMarker.longitude.toString())
         }
         else if (markerList[position] is ARMarker) {
             val arMarker = markerList[position] as ARMarker
             viewHolder.title.text = arMarker.title
-            viewHolder.type.text = "AR"
-            viewHolder.latLon.text = "Lat: ${arMarker.latitude}, lon: ${arMarker.longitude}"
+            viewHolder.type.text = mContext.getString(R.string.ar)
+            viewHolder.latLon.text = mContext.getString(R.string.coordinate_string, arMarker.latitude.toString(), arMarker.longitude.toString())
         }
     }
 
-    //Function to remove your own item from the recyclerview and database
+    /**
+     * Function to remove your own item from the recyclerview and database
+     */
     fun removeItem(position: Int, viewHolder: RecyclerView.ViewHolder) {
         removedItem = markerList[position]
         removedPosition = position
@@ -211,6 +213,5 @@ class RecyclerViewAdapter(private val markerList : MutableList<Any>) : RecyclerV
             .show()
     }
 
-    //Function to get item count
     override fun getItemCount() = markerList.size
 }

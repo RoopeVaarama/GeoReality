@@ -1,5 +1,6 @@
 package com.example.georeality
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,12 @@ import android.widget.TextView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 
-//CustomInfoWindowAdapter class
+/**
+ * InfoWindow adapter. Replaces default Google Maps marker info window with a customized one.
+ */
 class CustomInfoWindowAdapter(context: Context) : GoogleMap.InfoWindowAdapter {
-    private val mWindow:View =
+    @SuppressLint("InflateParams")
+    private val mWindow : View =
         LayoutInflater.from(context).inflate(R.layout.maps_custom_info_window, null)
     private val mContext: Context = context
     private var arMarker : ARMarker? = null
@@ -21,16 +25,15 @@ class CustomInfoWindowAdapter(context: Context) : GoogleMap.InfoWindowAdapter {
         val creatorView : TextView = view.findViewById(R.id.markerCreatorText)
         val distanceView : TextView = view.findViewById(R.id.markerDistanceText)
 
-
         if (marker.tag is ARMarker) {
             arMarker = marker.tag as ARMarker
             titleView.text = arMarker!!.title
-            typeView.text = "AR"
+            typeView.text = mContext.getString(R.string.ar)
             creatorView.text = arMarker!!.creator
         } else if (marker.tag is AudioMarker) {
             audioMarker = marker.tag as AudioMarker
             titleView.text = audioMarker!!.title
-            typeView.text = "Audio"
+            typeView.text = mContext.getString(R.string.audio)
             creatorView.text = audioMarker!!.creator
         }
         distanceView.text = marker.snippet

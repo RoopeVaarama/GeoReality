@@ -8,7 +8,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,9 +16,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -30,7 +26,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
@@ -41,14 +36,15 @@ import kotlinx.android.synthetic.main.fragment_map.*
  * @since 24.09.2020
  */
 
-//MapFragment Class
+/**
+ * MapFragment includes all Google Maps related implementation
+ */
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     GoogleMap.OnMyLocationClickListener, OnMapReadyCallback {
     private lateinit var navController : NavController
-    lateinit var lastLocation: Location
+    private lateinit var lastLocation: Location
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var map : GoogleMap
-    private lateinit var fragmentTransaction: FragmentTransaction
     private var dbViewModel : DBViewModel? = null
 
     override fun onCreateView(
@@ -56,12 +52,13 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
-
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
+
         return view
     }
 
@@ -77,11 +74,11 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         loadEntitys()
         map.setInfoWindowAdapter(CustomInfoWindowAdapter(requireActivity()))
         map.setOnInfoWindowClickListener { marker ->
-            var startPoint = lastLocation
-            var endPoint: Location = Location(LocationManager.GPS_PROVIDER)
+            val startPoint = lastLocation
+            val endPoint = Location(LocationManager.GPS_PROVIDER)
             endPoint.latitude = marker.position.latitude
             endPoint.longitude = marker.position.longitude
-            var dist = startPoint.distanceTo(endPoint)
+            val dist = startPoint.distanceTo(endPoint)
 
             if (dist < 15.0) {
                 MaterialAlertDialogBuilder(requireContext())
@@ -110,11 +107,11 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             }
         }
         map.setOnMarkerClickListener { marker ->
-            var startPoint = lastLocation
-            var endPoint: Location = Location(LocationManager.GPS_PROVIDER)
+            val startPoint = lastLocation
+            val endPoint = Location(LocationManager.GPS_PROVIDER)
             endPoint.latitude = marker.position.latitude
             endPoint.longitude = marker.position.longitude
-            var dist = startPoint.distanceTo(endPoint)
+            val dist = startPoint.distanceTo(endPoint)
 
             if (dist < 15.0) {
                 Log.d("marker", "onclick in range")
@@ -181,7 +178,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             ).show()
             val locationdata = "${lastLocation.latitude}, ${lastLocation.longitude}"
             val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
-            var editor = sharedPref?.edit()
+            val editor = sharedPref?.edit()
             editor?.putString("locationData", locationdata)
             editor?.commit()
 
@@ -191,9 +188,10 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     }
     private fun loadEntitys(){
         dbViewModel = Database.dbViewModel
-        dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, Observer {
+
+        dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, {
             Log.d("onCreateView", it.toString())
-            //To create audio markers on map
+            // Create audio markers on map
             for (i in it.indices){
                 Log.d("marker", "${it[i].latitude!!} ${it[i].longitude}" )
                 map.addMarker(
@@ -206,9 +204,9 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             }
 
         })
-        dbViewModel!!.arMarkers.observe(viewLifecycleOwner, Observer {
+        dbViewModel!!.arMarkers.observe(viewLifecycleOwner, {
             Log.d("OnCreateView", it.toString())
-            //Create AR markers on map
+            // Create AR markers on map
             for (i in it.indices){
                 Log.d("marker", "${it[i].latitude!!} ${it[i].longitude}" )
                 map.addMarker(

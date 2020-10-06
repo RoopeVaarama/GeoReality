@@ -14,18 +14,13 @@
     <string name="type">Type</string>
     <string name="cache_type">Cache type</string>
     <string name="create_a_new_cache">Create a new cache</string>
-    <string name="ar">AR</string>
     <string name="save">Save</string>
-    <string name="audio">Audio</string>
-    <string name="recording">Äänitä</string>
-    <string name="audio_record">Record</string>
+    <string name="recording">Äänitetään</string>
+    <string name="audio_record">Äänitä</string>
     <string name="_00_00">00:00</string>
-    <string name="stop">Stop</string>
     <string name="ar_type_2d">2D teksti</string>
     <string name="ar_type_3d">3D malli</string>
-    <string name="ar_text">Tekstiä blaa</string>
-    <string name="_2d_text">2D Text</string>
-    <string name="info">Info</string>
+    <string name="ar_text">Kirjoita näytettävä teksti</string>
     <string name="audio_recording">Nauhoitetaan...</string>
     <string name="audio_play">Toista</string>
     <string name="audio_new">Uusi</string>
@@ -39,4 +34,5 @@
     <string name="cache_dialog_open">Avaa</string>
     <string name="cache_model_duck">Ankka</string>
     <string name="cache_model_avocado">Avokaado</string>
+    <string name="coordinate_string">Leveys: %1s, korkeus: %2s</string>
 </resources>

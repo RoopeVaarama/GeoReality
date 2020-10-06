@@ -8,25 +8,15 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.util.Log
-import android.view.Gravity
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.ui.onNavDestinationSelected
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.navigation_header_layout.view.*
 
@@ -36,13 +26,12 @@ import kotlinx.android.synthetic.main.navigation_header_layout.view.*
  */
 
 /**
- * MainActivity is the base activity, which contains the top navigation and map functionality
+ * MainActivity is the base activity, which contains the top navigation and map functionality.
  */
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var navController : NavController
     private lateinit var mAuth: FirebaseAuth
     private lateinit var providers: List<AuthUI.IdpConfig>
-    private lateinit var fragmentTransaction: FragmentTransaction
     private var user: FirebaseUser? = null
     private val REQUEST_CODE = 1
 
@@ -57,8 +46,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (!userIsLoggedIn()) {
             showSignInOptions()
-        } else {
-            Log.d("User", user!!.email!!)
         }
         setupNav()
         checkPermissions()
@@ -98,10 +85,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return user != null
     }
 
-    fun isUserAnonymous(): Boolean {
-        return user!!.isAnonymous
-    }
-
     private fun showSignInOptions() {
         providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build()
@@ -119,7 +102,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     /**
      * Set up the top app bar and related navigation
-     * ============================================
      */
     private fun setupNav() {
         setSupportActionBar(topAppBar)
@@ -134,8 +116,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigation.getHeaderView(0).header.text = user!!.email
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
-
-
 
         navigation.setNavigationItemSelectedListener(this)
     }

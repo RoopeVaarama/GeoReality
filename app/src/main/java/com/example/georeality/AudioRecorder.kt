@@ -11,7 +11,9 @@ import java.io.*
 import java.lang.Exception
 import java.time.LocalTime
 
-//AudioRecorder class
+/**
+ * AudioRecorder class contains control functions for recording and playing audio
+ */
 class AudioRecorder {
     private lateinit var recFile : File
     var recording : Boolean = false
@@ -24,7 +26,7 @@ class AudioRecorder {
             recFile = File("$storageDir/$file")
         } catch (e: Exception) {
             Log.d("error", "error creating file: ${e.message}")
-        }
+    }
 
         try {
             val outputStream = FileOutputStream(recFile)
@@ -55,8 +57,8 @@ class AudioRecorder {
                 recording = true
                 recorder.startRecording()
                 while (recording) {
-                    val numofBytes = recorder.read(audioData, 0, minBufferSize)
-                    if (numofBytes > 0) {
+                    val numOfBytes = recorder.read(audioData, 0, minBufferSize)
+                    if (numOfBytes > 0) {
                         dataOutputStream.write(audioData)
 
                     }
@@ -102,7 +104,7 @@ class AudioRecorder {
         try{
             i = istream.read(buffer, 0, minBufferSize)
             while(i != -1) {
-                track!!.write(buffer, 0, i)
+                track.write(buffer, 0, i)
                 i = istream.read(buffer, 0, minBufferSize)
             }
         } catch(e: IOException) {

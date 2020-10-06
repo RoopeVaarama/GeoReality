@@ -30,11 +30,13 @@ import java.io.*
  * @since 24.09.2020
  */
 
-//CacheCreationFragment class
+/**
+ * CacheCreationFragment contains all functionality for modifying a marker and
+ * submitting it to the database.
+ */
 class CacheCreationFragment : Fragment() {
     private var file : File? = null
     private var audioRecorder : AudioRecorder? = null
-    private var Recording = false
     private var switchIsOn = false
     private var location : String? = null
     private lateinit var navController : NavController
@@ -43,7 +45,6 @@ class CacheCreationFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         askPerm()
         val view = inflater.inflate(R.layout.fragment_cache_creation, container, false)
         setupLayout(view)
@@ -66,7 +67,7 @@ class CacheCreationFragment : Fragment() {
         val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
         location = sharedPref?.getString("locationData", "defaultLocation")
 
-        typeSwitch.setOnCheckedChangeListener { compoundButton, b ->
+        typeSwitch.setOnCheckedChangeListener { _, b ->
             //AUDIO IS CHECKED
             if (b) {
                 typeSwitch.text = getString(R.string.audio)
@@ -136,9 +137,7 @@ class CacheCreationFragment : Fragment() {
             R.array.type_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
-            //Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout)
-            //Apply the adapter to the spinner
             spinner.adapter = adapter
         }
 
@@ -148,9 +147,7 @@ class CacheCreationFragment : Fragment() {
             R.array.model_array,
             android.R.layout.simple_spinner_item
         ).also { adapter ->
-            //Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout)
-            //Apply the adapter to the spinner
             spinnerModels.adapter = adapter
         }
 
@@ -173,25 +170,6 @@ class CacheCreationFragment : Fragment() {
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
             }
-        }
-
-        spinnerModels.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                //Model1 is selected
-                if (p2 == 0) {
-
-                }
-
-                //Model2 is selected
-                if (p2 == 1) {
-
-                }
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
-            }
-
         }
     }
 
@@ -230,6 +208,10 @@ class CacheCreationFragment : Fragment() {
         }
         return true
     }
+
+    /**
+     * Utilizes the AudioRecorder class to play audio and sync it with the UI chronometer
+     */
     private fun playRecording(timer : Chronometer) {
         if (file != null) {
             timer.base = SystemClock.elapsedRealtime()
@@ -248,6 +230,10 @@ class CacheCreationFragment : Fragment() {
             }
         }
     }
+
+    /**
+     * Submits all selected fields and choices
+     */
     private fun submitCache() {
         Log.d("SubmitCache", "Clicked! $switchIsOn")
         if (formIsValid()) {
@@ -317,7 +303,7 @@ class CacheCreationFragment : Fragment() {
 
 class SpinnerActivity: Activity(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-        val selection = parent?.getItemAtPosition(pos)
+        parent?.getItemAtPosition(pos)
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

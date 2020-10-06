@@ -1,20 +1,14 @@
 package com.example.georeality
 
-import android.icu.text.Transliterator
-import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageMetadata
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -43,26 +37,9 @@ class DBViewModel : ViewModel() {
         _audioMarkers.value = ArrayList()
         _arMarkers.value = ArrayList()
 
-        /* Implement logic when a new audio marker is added
-        val audioMarkerListener = object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("AudioDataAmount", snapshot.childrenCount.toString())
-                for (marker in snapshot.children) {
-                    val markerClass = marker.getValue<AudioMarker>()
-                    if (markerClass != null) {
-                        _audioMarkers.value?.add(markerClass)
-                        _audioMarkers.value = _audioMarkers.value
-
-                    }
-                }
-            }
-            override fun onCancelled(error: DatabaseError) {
-            }
-
-        }
-        dbAudio.child("audio").addValueEventListener(audioMarkerListener)*/
-
+        // Listen to database changes for audio markers
         val audioMarkerListener = object : ChildEventListener {
+            // Database node added to database
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val markerClass = snapshot.getValue<AudioMarker>()
                 if (markerClass != null) {
@@ -71,10 +48,7 @@ class DBViewModel : ViewModel() {
 
                 }
             }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            }
-
+            // Database node removed from database
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val markerClass = snapshot.getValue<AudioMarker>()
                 if (markerClass != null) {
@@ -83,18 +57,18 @@ class DBViewModel : ViewModel() {
 
                 }
             }
-
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            }
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
             }
-
             override fun onCancelled(error: DatabaseError) {
             }
-
         }
         dbAudio.child("audio").addChildEventListener(audioMarkerListener)
 
-        // Implement logic when new AR marker is added
+        // Listen to database changes for AR markers
         val arMarkerListener = object : ChildEventListener {
+            // Database node added to database
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val markerClass = snapshot.getValue<ARMarker>()
                 if (markerClass != null) {
@@ -103,29 +77,27 @@ class DBViewModel : ViewModel() {
 
                 }
             }
-
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            }
-
+            // Database node removed from database
             override fun onChildRemoved(snapshot: DataSnapshot) {
                 val markerClass = snapshot.getValue<ARMarker>()
                 if (markerClass != null) {
                     _arMarkers.value?.remove(markerClass)
                     _arMarkers.value = _arMarkers.value
-
                 }
             }
-
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            }
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
             }
-
             override fun onCancelled(error: DatabaseError) {
             }
         }
         dbAR.child("ar").addChildEventListener(arMarkerListener)
-
     }
 
+    /**
+     * Saves AudioMarker to database
+     */
     fun addNewAudioMarker(user : String?,
                           latitude : Double?,
                           longitude : Double?,
@@ -140,6 +112,9 @@ class DBViewModel : ViewModel() {
         tempDbAudio.setValue(newAudioMarker)
     }
 
+    /**
+     * Saves ARMarker to database
+     */
     fun addNewARMarker(user : String?,
                        latitude: Double?,
                        longitude : Double?,
@@ -155,6 +130,9 @@ class DBViewModel : ViewModel() {
 
     }
 
+    /**
+     * Fetches audio track from database based on (id) parameter and returns it
+     */
     fun getAudioTrack(id : String) : File? {
         val storageReference = dbStorage.reference
         val pathReference = storageReference.child(id)
@@ -168,11 +146,14 @@ class DBViewModel : ViewModel() {
         return track
     }
 
+    /**
+     * Deletes a marker based on the (type) parameter
+     */
     fun deleteMarker(id : String, type : String) {
         if (type == "audio") {
             dbAudio.child("audio").child(id).setValue(null)
             val trackToDeleteReference = dbStorage.reference.child(id)
-            Log.d("FilePath", id.toString())
+            Log.d("FilePath", id)
             trackToDeleteReference.delete().addOnSuccessListener {
                 Log.d("File", "File deleted succesfully!")
             }.addOnFailureListener {
@@ -190,6 +171,9 @@ class DBViewModel : ViewModel() {
     }
 }
 
+/**
+ * Include dbViewModel inside an object for global level access
+ */
 object Database {
     var dbViewModel : DBViewModel? = null
     init {
@@ -197,7 +181,6 @@ object Database {
     }
 }
 
-// AudioMarker contains data to create a marker with audio features
 data class AudioMarker(
     var creator : String? = "",
     var latitude : Double? = 0.0,
@@ -206,7 +189,6 @@ data class AudioMarker(
     var audio_id : String? = ""
 )
 
-// ARMarker contains data to create a marker with AR features and capabilities
 data class ARMarker(
     var creator : String? = "",
     var latitude : Double? = 0.0,

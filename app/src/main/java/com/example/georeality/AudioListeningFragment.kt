@@ -18,13 +18,14 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
 
-//AudioListeningFragment class
+/**
+ * Includes only one functionality, which is playing an audio file
+ */
 class AudioListeningFragment : Fragment() {
     private val args : AudioListeningFragmentArgs by navArgs()
     private var file : File? = null
     private var playing : Boolean = false
     private val audioRecorder = AudioRecorder()
-    private lateinit var timer : Chronometer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +48,7 @@ class AudioListeningFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         actionButton.setOnClickListener {
             if (!playing) {
                 playRecording(listeningTimer)
