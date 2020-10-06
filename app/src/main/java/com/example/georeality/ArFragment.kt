@@ -11,10 +11,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.navigation.fragment.navArgs
+import com.google.ar.core.Frame
+import com.google.ar.core.Plane
+import com.google.ar.core.Pose
+import com.google.ar.core.TrackingState
+import com.google.ar.sceneform.AnchorNode
+import com.google.ar.sceneform.FrameTime
+import com.google.ar.sceneform.Scene
 import com.google.ar.sceneform.assets.RenderableSource
+import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.ux.ArFragment
+import com.google.ar.sceneform.ux.TransformableNode
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.view_renderable_text.view.*
 import java.net.URI
@@ -33,7 +42,6 @@ class ArFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_ar, container, false)
-
         fragment = childFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment
 
         //Get the argument in JSON and convert to data class ARMarker
@@ -48,7 +56,7 @@ class ArFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        fragment.arSceneView.scene.addOnUpdateListener(this::onUpdateFrame)
         /**
          * Checking ARMarker class values
          * 1. If 2D or 3D
@@ -66,6 +74,7 @@ class ArFragment : Fragment() {
 
             //Model is duck
             if (arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
+                createModelRenderables(getString(R.string.cache_model_duck))
 
             }
             //Model is avocado
@@ -74,6 +83,63 @@ class ArFragment : Fragment() {
             }
         }
 
+    }
+    private fun onUpdateFrame(frameTime: FrameTime?) {
+        //get the frame from the scene for shorthand
+        val frame = fragment.arSceneView.arFrame
+        if (frame != null) {
+            //get the trackables to ensure planes are detected
+            val var3 = frame.getUpdatedTrackables(Plane::class.java).iterator()
+            while(var3.hasNext()) {
+                val plane = var3.next() as Plane
+
+                //If a plane has been detected & is being tracked by ARCore
+                if (plane.trackingState == TrackingState.TRACKING) {
+
+                    //Hide the plane discovery helper animation
+                    fragment.planeDiscoveryController.hide()
+
+
+                    //Get all added anchors to the frame
+                    val iterableAnchor = frame.updatedAnchors.iterator()
+
+                    //place the first object only if no previous anchors were added
+                    if(!iterableAnchor.hasNext()) {
+                        //Perform a hit test at the center of the screen to place an object without tapping
+                        val hitTest = frame.hitTest(frame.screenCenter().x, frame.screenCenter().y)
+
+                        //iterate through all hits
+                        val hitTestIterator = hitTest.iterator()
+                        while(hitTestIterator.hasNext()) {
+                            val hitResult = hitTestIterator.next()
+
+                            //Create an anchor at the plane hit
+                            val modelAnchor = plane.createAnchor(hitResult.hitPose)
+
+                            //Attach a node to this anchor with the scene as the parent
+                            val anchorNode = AnchorNode(modelAnchor)
+                            anchorNode.setParent(fragment.arSceneView.scene)
+
+                            //create a new TranformableNode that will carry our object
+                            val transformableNode = TransformableNode(fragment.transformationSystem)
+                            transformableNode.setParent(anchorNode)
+                            transformableNode.renderable = this@ArFragment.modelRenderable1
+
+                            //Alter the real world position to ensure object renders on the table top. Not somewhere inside.
+                            transformableNode.worldPosition = Vector3(modelAnchor.pose.tx(),
+                                modelAnchor.pose.compose(Pose.makeTranslation(0f, 0.05f, 0f)).ty(),
+                                modelAnchor.pose.tz())
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //A method to find the screen center. This is used while placing objects in the scene
+    private fun Frame.screenCenter(): Vector3 {
+        val vw = view?.findViewById<View>(R.id.sceneform_fragment)
+        return Vector3(vw?.width!! / 2f, vw?.height!! / 2f, 0f)
     }
 
     /**

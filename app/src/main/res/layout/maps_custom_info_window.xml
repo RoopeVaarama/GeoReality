@@ -14,20 +14,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/markerTitleText"
+            android:textColor="@android:color/black"
             android:maxLines="1"
             android:ellipsize="end"
             android:textSize="14sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
             android:id="@+id/markerTypeText"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
             android:id="@+id/markerCreatorText"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
             android:id="@+id/markerDistanceText"/>
     </LinearLayout>
 </LinearLayout>
