@@ -66,7 +66,7 @@ class ArFragment : Fragment() {
 
             //Model is duck
             if (arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
-
+                fragment.arSceneView
             }
             //Model is avocado
             else if (arMarkerClass.model_type == getString(R.string.cache_model_avocado)) {

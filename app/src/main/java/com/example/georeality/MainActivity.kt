@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.navigation_header_layout.view.*
 
 /**
  * @author Topias Peiponen, Roope Vaarama
@@ -124,7 +125,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun setupNav() {
         setSupportActionBar(topAppBar)
 
-
         val drawerToggle = ActionBarDrawerToggle(
             this,
             drawer_layout,
@@ -132,6 +132,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.app_name,
             R.string.app_name
         )
+        navigation.getHeaderView(0).header.text = user!!.email
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
