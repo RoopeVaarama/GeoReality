@@ -5,6 +5,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryDark</item>
+        <item name="android:textColorPrimary">@color/TextOnPrimary</item>
+        <item name="colorControlNormal">@color/TextOnPrimary</item>
     </style>
 
     <style name="LoginTheme" parent="AppTheme">
