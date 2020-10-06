@@ -33,4 +33,10 @@
     <string name="log_out">Log out</string>
     <string name="cache_entity_button">Avaa kätkö</string>
     <string name="map_info_window_open_ar">Avaa kätkö</string>
+    <string name="cache_dialog_title">Kätkön avaus</string>
+    <string name="cache_dialog_message">Olen aukaisemassa kätkön. Oletko varma?</string>
+    <string name="cache_dialog_cancel">Takaisin</string>
+    <string name="cache_dialog_open">Avaa</string>
+    <string name="cache_model_duck">Ankka</string>
+    <string name="cache_model_avocado">Avokaado</string>
 </resources>

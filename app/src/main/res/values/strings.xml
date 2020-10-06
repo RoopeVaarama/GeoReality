@@ -44,5 +44,9 @@
     <string name="cache_dialog_message">You are about to open a cache. Do you want to proceed?</string>
     <string name="cache_dialog_cancel">Cancel</string>
     <string name="cache_dialog_open">Open</string>
+    <string name="cache_model_duck">Duck</string>
+    <string name="cache_model_avocado">Avocado</string>
+    <string name="model1_url" translatable="false">https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF/Duck.gltf</string>
+    <string name="model2_url" translatable="false">https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Avocado/glTF/Avocado.gltf</string>
 
 </resources>

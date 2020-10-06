@@ -1,21 +1,31 @@
 package com.example.georeality
 
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.text.Layout
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.google.ar.core.HitResult
-import com.google.ar.core.Plane
-import com.google.ar.sceneform.AnchorNode
-import com.google.ar.sceneform.HitTestResult
+import android.widget.LinearLayout
+import androidx.navigation.fragment.navArgs
+import com.google.ar.sceneform.assets.RenderableSource
+import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.ux.ArFragment
-import com.google.ar.sceneform.ux.TransformableNode
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.view_renderable_text.view.*
+import java.net.URI
 
 class ArFragment : Fragment() {
+    private val args : ArFragmentArgs by navArgs()
+    private var modelRenderable1 : ModelRenderable? = null
+    private var modelRenderable2 : ModelRenderable? = null
+    private var viewRenderable : ViewRenderable? = null
+    private lateinit var mContext : Context
+    private lateinit var arMarkerClass : ARMarker
     private lateinit var fragment : ArFragment
 
     override fun onCreateView(
@@ -26,6 +36,114 @@ class ArFragment : Fragment() {
 
         fragment = childFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment
 
+        //Get the argument in JSON and convert to data class ARMarker
+        val arMarkerJson = args.arMarkerJson
+        val gson = Gson()
+        arMarkerClass = gson.fromJson(arMarkerJson, ARMarker::class.java)
+
+        mContext = requireContext()
+
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        /**
+         * Checking ARMarker class values
+         * 1. If 2D or 3D
+         * 2. If 3D, check which model to display
+         */
+        if (arMarkerClass.type == getString(R.string.ar_type_2d)) {
+            if (arMarkerClass.text != null) {
+                createViewRenderable(arMarkerClass.text!!)
+            }
+        }
+        else if (arMarkerClass.type == getString(R.string.ar_type_3d)) {
+            if (arMarkerClass.model_type != null) {
+                createModelRenderables(arMarkerClass.model_type!!)
+            }
+
+            //Model is duck
+            if (arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
+
+            }
+            //Model is avocado
+            else if (arMarkerClass.model_type == getString(R.string.cache_model_avocado)) {
+
+            }
+        }
+
+    }
+
+    /**
+     * Creates TextView that is displayed in AR mode
+     */
+    private fun createViewRenderable(displayText : String) {
+        val renderableFuture = ViewRenderable.builder()
+            .setView(mContext, R.layout.view_renderable_text)
+            .build()
+        renderableFuture.thenAccept {it ->
+            it.view.viewRenderableText.text = displayText
+            viewRenderable = it }
+    }
+
+    /**
+     * Creates models that are displayed in AR mode
+     */
+    private fun createModelRenderables(modelType : String) {
+        val modelMap = createModelMap()
+
+        if (modelType == getString(R.string.cache_model_duck)) {
+            val renderableFuture1 = ModelRenderable.builder()
+                .setSource(mContext, RenderableSource.builder().setSource(
+                        mContext,
+                        modelMap[modelType],
+                        RenderableSource.SourceType.GLTF2
+                    )
+                        .setScale(0.5f)
+                        .setRecenterMode(RenderableSource.RecenterMode.ROOT)
+                        .build()
+                )
+                .setRegistryId(getString(R.string.cache_model_duck))
+                .build()
+            renderableFuture1.thenAccept { it -> modelRenderable1 = it }
+            renderableFuture1.exceptionally {
+                Log.d("Renderable", "Unable to create renderable")
+                null
+            }
+        }
+        else if (modelType == getString(R.string.cache_model_avocado)) {
+            val renderableFuture2 = ModelRenderable.builder()
+                .setSource(mContext, RenderableSource.builder().setSource(
+                    mContext,
+                    modelMap[modelType],
+                    RenderableSource.SourceType.GLTF2
+                )
+                    .setScale(0.50f)
+                    .setRecenterMode(RenderableSource.RecenterMode.ROOT)
+                    .build()
+                )
+                .setRegistryId(getString(R.string.cache_model_avocado))
+                .build()
+            renderableFuture2.thenAccept { it -> modelRenderable2 = it }
+            renderableFuture2.exceptionally {
+                Log.d("Renderable", "Unable to create renderable")
+                null
+                }
+        }
+    }
+
+    /**
+     * Assigns models urls to their perspective strings in resources
+     */
+    private fun createModelMap() : Map<String, Uri> {
+        val model1 = getString(R.string.cache_model_duck)
+        val model2 = getString(R.string.cache_model_avocado)
+
+        val url1 = Uri.parse(getString(R.string.model1_url))
+        val url2 = Uri.parse(getString(R.string.model2_url))
+
+        return mapOf(model1 to url1, model2 to url2)
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="model_array">
-        <item>Model1</item>
-        <item>Model2</item>
+        <item>@string/cache_model_duck</item>
+        <item>@string/cache_model_avocado</item>
     </string-array>
 </resources>
