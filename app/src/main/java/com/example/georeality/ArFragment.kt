@@ -109,7 +109,7 @@ class ArFragment : Fragment() {
 
                         //iterate through all hits
                         val hitTestIterator = hitTest.iterator()
-                        while(hitTestIterator.hasNext()) {
+                        if(hitTestIterator.hasNext() ) {
                             val hitResult = hitTestIterator.next()
 
                             //Create an anchor at the plane hit
@@ -122,11 +122,11 @@ class ArFragment : Fragment() {
                             //create a new TranformableNode that will carry our object
                             val transformableNode = TransformableNode(fragment.transformationSystem)
                             transformableNode.setParent(anchorNode)
-                            if(arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
+                            if (arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
                                 transformableNode.renderable = this@ArFragment.modelRenderable1
                             }
                             else if(arMarkerClass.model_type == getString(R.string.cache_model_avocado)) {
-                                    transformableNode.renderable = this@ArFragment.modelRenderable2
+                                transformableNode.renderable = this@ArFragment.modelRenderable2
 
                             } else if (arMarkerClass.type == getString(R.string.ar_type_2d)){
                                 transformableNode.renderable = this@ArFragment.viewRenderable
@@ -193,7 +193,7 @@ class ArFragment : Fragment() {
                     modelMap[modelType],
                     RenderableSource.SourceType.GLTF2
                 )
-                    .setScale(0.50f)
+                    .setScale(4f)
                     .setRecenterMode(RenderableSource.RecenterMode.ROOT)
                     .build()
                 )
