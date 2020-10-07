@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GeoReality</string>
     <string name="burger_menu_title">Avaa menu</string>
     <string name="nav_menu_item_map">Kartta</string>
     <string name="nav_menu_item_cache">Minun kätköt</string>
@@ -35,4 +34,9 @@
     <string name="cache_model_duck">Ankka</string>
     <string name="cache_model_avocado">Avokaado</string>
     <string name="coordinate_string">Leveys: %1s, korkeus: %2s</string>
+    <string name="info_fragment_preview">d</string>
+    <string name="info_fragment_red_desc">d</string>
+    <string name="info_fragment_blue_desc">d</string>
+    <string name="info_fragment_infowindow_desc">d</string>
+    <string name="info_fragment_title">Info</string>
 </resources>
