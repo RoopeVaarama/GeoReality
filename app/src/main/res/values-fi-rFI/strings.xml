@@ -39,4 +39,5 @@
     <string name="info_fragment_blue_desc">d</string>
     <string name="info_fragment_infowindow_desc">d</string>
     <string name="info_fragment_title">Info</string>
+    <string name="mycaches_title">Minun kätköni</string>
 </resources>

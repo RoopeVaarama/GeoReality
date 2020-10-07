@@ -9,19 +9,10 @@
     android:layout_margin="16dp">
 
     <TextView
-        android:id="@+id/info_fragment_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/info_fragment_title"
-        style="@style/TitleTheme"/>
-
-    <TextView
         android:id="@+id/info_fragment_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/info_fragment_preview"
-        android:layout_marginTop="16dp"/>
+        android:text="@string/info_fragment_preview"/>
 
     <LinearLayout
         android:id="@+id/redMarkerLinear"
