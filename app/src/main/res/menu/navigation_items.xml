@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/emailmenu">
+        <item
+            android:id="@+id/useremail"
+            android:enabled="false"
+            android:title="@string/email" />
+    </group>
     <group android:id="@+id/menu">
         <item android:title="@string/nav_menu_item_map"
             android:icon="@drawable/ic_baseline_map_24"/>

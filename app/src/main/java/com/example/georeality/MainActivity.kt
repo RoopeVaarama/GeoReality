@@ -8,8 +8,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.view.menu.MenuView
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -18,6 +20,8 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
+import kotlinx.android.synthetic.main.fragment_cache_creation.view.*
 import kotlinx.android.synthetic.main.navigation_header_layout.view.*
 
 /**
@@ -113,16 +117,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.app_name,
             R.string.app_name
         )
-        navigation.getHeaderView(0).header.text = user!!.email
+        navigation.menu.findItem(R.id.useremail).title = user!!.email
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
         navigation.setNavigationItemSelectedListener(this)
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d("Item", item.toString())
         when (item.toString()) {
+            "Email" -> {
+                title = user!!.email
+            }
             getString(R.string.nav_menu_item_map) -> {
                 switchToMapFragment()
                 navigation.setCheckedItem(item)

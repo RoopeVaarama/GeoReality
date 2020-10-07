@@ -55,5 +55,7 @@
     <string name="info_fragment_blue_desc">The blue marker is an audio marker. It contains a cache with an audio recording that another person recorded.</string>
     <string name="info_fragment_infowindow_desc">Clicking on a marker will display an info window. The info window tells you if you are close enough to the cache to open it.  Clicking on a close enough cache\'s info window will open up the cache.</string>
     <string name="mycaches_title">My caches</string>
+    <string name="useremail">UserEmail</string>
+    <string name="email">email</string>
 
 </resources>
