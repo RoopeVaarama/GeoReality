@@ -4,17 +4,4 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<<<<<<< HEAD
-=======
-    <TextView
-        android:id="@+id/header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        style="@style/TitleTheme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
->>>>>>> e66795124acb2374bdb8195d211609437d0fd029
-
 </androidx.constraintlayout.widget.ConstraintLayout>
