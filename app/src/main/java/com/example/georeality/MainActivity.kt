@@ -128,9 +128,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d("Item", item.toString())
         when (item.toString()) {
-            "Email" -> {
-                title = user!!.email
-            }
             getString(R.string.nav_menu_item_map) -> {
                 switchToMapFragment()
                 navigation.setCheckedItem(item)
