@@ -113,19 +113,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setupActionBarWithNavController(navController, appBarConfiguration)
         navigation.setupWithNavController(navController)
         toolbar.setNavigationOnClickListener {
-            navController.navigateUp(appBarConfiguration)
+            /**
+             * Back navigation is overridden for AR and audio listening fragments to avoid
+             * memory leaks
+              */
+            when(navController.currentDestination?.id) {
+                R.id.arFragment -> {
+                    navController.navigate(R.id.mapFragment)
+                }
+                R.id.audioListeningFragment -> {
+                    navController.navigate(R.id.mapFragment)
+                }
+                else -> navController.navigateUp(appBarConfiguration)
+            }
         }
         navigation.setNavigationItemSelectedListener(this)
         navigation.menu.findItem(R.id.userEmail).title = user!!.email
     }
 
-    override fun onNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration)
-                || super.onNavigateUp()
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        Log.d("menuitem", item.toString())
         when (item.itemId) {
             R.id.mapFragment -> switchToMapFragment()
             R.id.myCachesFragment -> switchToUserCachesFragment()
