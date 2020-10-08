@@ -45,7 +45,8 @@ class ArFragment : Fragment() {
     private var viewRenderable : ViewRenderable? = null
     private var cacheCompleted : Boolean = false
     private var nodeMaxAmount = 3
-    private var nodeCurrentAmount = 0
+    private var nodeCreatedAmount = 0
+    private var nodeGatheredAmount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,7 +113,7 @@ class ArFragment : Fragment() {
     private fun onUpdateFrame(frameTime: FrameTime?) {
         // Get the frame from the scene for shorthand
         val frame = fragment.arSceneView.arFrame
-        if (frame != null) {
+        if (frame != null && !cacheCompleted) {
             // Get the trackables to ensure planes are detected
             val var3 = frame.getUpdatedTrackables(Plane::class.java).iterator()
             if(var3.hasNext()) {
@@ -135,56 +136,90 @@ class ArFragment : Fragment() {
 
                         // Iterate through all hits
                         val hitTestIterator = hitTest.iterator()
-                        while(hitTestIterator.hasNext() && nodeCurrentAmount < nodeMaxAmount) {
-                            val hitResult = hitTestIterator.next()
 
-                            // Create an anchor at the plane hit
-                            val modelAnchor = plane.createAnchor(hitResult.hitPose)
+                        if (arMarkerClass.type!! == getString(R.string.ar_type_2d)) {
 
-                            // Attach a node to this anchor with the scene as the parent
-                            val anchorNode = AnchorNode(modelAnchor)
-                            anchorNode.setParent(fragment.arSceneView.scene)
+                            // Plant the renderable ONCE
+                            if(hitTestIterator.hasNext()) {
+                                val hitResult = hitTestIterator.next()
 
-                            // Create a new TransformableNode that will carry our object
-                            val transformableNode = TransformableNode(fragment.transformationSystem)
-                            transformableNode.setParent(anchorNode)
-                            when {
-                                arMarkerClass.model_type == getString(R.string.cache_model_duck) -> {
-                                    transformableNode.renderable = this@ArFragment.modelRenderable1
-                                    transformableNode.setOnTapListener { hitTestResult, _ ->
-                                        val nodeToRemove = hitTestResult.node
-                                        anchorNode.removeChild(nodeToRemove)
-                                        nodeCurrentAmount += 1
-                                        scoreCounter.text = getString(R.string.ar_fragment_counter, nodeCurrentAmount.toString())
-                                        if (nodeCurrentAmount == nodeMaxAmount) {
-                                            cacheCompleted = true
-                                            changeButtonState()
-                                        }
-                                    }
-                                }
-                                arMarkerClass.model_type == getString(R.string.cache_model_avocado) -> {
-                                    transformableNode.renderable = this@ArFragment.modelRenderable2
-                                    transformableNode.setOnTapListener { hitTestResult, _ ->
-                                        val nodeToRemove = hitTestResult.node
-                                        anchorNode.removeChild(nodeToRemove)
-                                        nodeCurrentAmount += 1
-                                        scoreCounter.text = getString(R.string.ar_fragment_counter, nodeCurrentAmount.toString())
-                                        if (nodeCurrentAmount == nodeMaxAmount) {
-                                            cacheCompleted = true
-                                            changeButtonState()
-                                        }
-                                    }
-                                }
-                                arMarkerClass.type == getString(R.string.ar_type_2d) -> {
-                                    transformableNode.renderable = this@ArFragment.viewRenderable
-                                    changeButtonState()
-                                }
+                                // Create an anchor at the plane hit
+                                val modelAnchor = plane.createAnchor(hitResult.hitPose)
+
+                                // Attach a node to this anchor with the scene as the parent
+                                val anchorNode = AnchorNode(modelAnchor)
+                                anchorNode.setParent(fragment.arSceneView.scene)
+
+                                // Create a new TransformableNode that will carry our object
+                                val transformableNode = TransformableNode(fragment.transformationSystem)
+                                transformableNode.setParent(anchorNode)
+
+                                transformableNode.renderable = this@ArFragment.viewRenderable
+                                cacheCompleted = true
+                                changeButtonState()
+
+                                // Alter the real world position to ensure object renders on the table top. Not somewhere inside.
+                                transformableNode.worldPosition = Vector3(modelAnchor.pose.tx(),
+                                    modelAnchor.pose.compose(Pose.makeTranslation(0f, 0.05f, 0f)).ty(),
+                                    modelAnchor.pose.tz())
                             }
+                        } else if (arMarkerClass.type!! == getString(R.string.ar_type_3d)) {
 
-                            // Alter the real world position to ensure object renders on the table top. Not somewhere inside.
-                            transformableNode.worldPosition = Vector3(modelAnchor.pose.tx(),
-                                modelAnchor.pose.compose(Pose.makeTranslation(0f, 0.05f, 0f)).ty(),
-                                modelAnchor.pose.tz())
+                            // Keep planting the renderables until false
+                            while(hitTestIterator.hasNext() && nodeCreatedAmount < nodeMaxAmount) {
+                                val hitResult = hitTestIterator.next()
+                                nodeCreatedAmount += 1
+
+                                // Create an anchor at the plane hit
+                                val modelAnchor = plane.createAnchor(hitResult.hitPose)
+
+                                // Attach a node to this anchor with the scene as the parent
+                                val anchorNode = AnchorNode(modelAnchor)
+                                anchorNode.setParent(fragment.arSceneView.scene)
+
+                                // Create a new TransformableNode that will carry our object
+                                val transformableNode =
+                                    TransformableNode(fragment.transformationSystem)
+                                transformableNode.setParent(anchorNode)
+                                when (arMarkerClass.model_type) {
+                                    getString(R.string.cache_model_duck) -> {
+                                        transformableNode.renderable =
+                                            this@ArFragment.modelRenderable1
+                                        transformableNode.setOnTapListener { hitTestResult, _ ->
+                                            val nodeToRemove = hitTestResult.node
+                                            anchorNode.removeChild(nodeToRemove)
+                                            nodeGatheredAmount += 1
+                                            scoreCounter.text =
+                                                getString(R.string.ar_fragment_counter,
+                                                    nodeGatheredAmount.toString())
+                                            if (nodeGatheredAmount == nodeMaxAmount) {
+                                                cacheCompleted = true
+                                                changeButtonState()
+                                            }
+                                        }
+                                    }
+                                    getString(R.string.cache_model_avocado) -> {
+                                        transformableNode.renderable =
+                                            this@ArFragment.modelRenderable2
+                                        transformableNode.setOnTapListener { hitTestResult, _ ->
+                                            val nodeToRemove = hitTestResult.node
+                                            anchorNode.removeChild(nodeToRemove)
+                                            nodeGatheredAmount += 1
+                                            scoreCounter.text =
+                                                getString(R.string.ar_fragment_counter,
+                                                    nodeGatheredAmount.toString())
+                                            if (nodeGatheredAmount == nodeMaxAmount) {
+                                                cacheCompleted = true
+                                                changeButtonState()
+                                            }
+                                        }
+                                    }
+                                }
+                                // Alter the real world position to ensure object renders on the table top. Not somewhere inside.
+                                transformableNode.worldPosition = Vector3(modelAnchor.pose.tx(),
+                                    modelAnchor.pose.compose(Pose.makeTranslation(0f, 0.05f, 0f)).ty(),
+                                    modelAnchor.pose.tz())
+                            }
                         }
                     }
                 }
@@ -233,7 +268,7 @@ class ArFragment : Fragment() {
                         modelMap[modelType],
                         RenderableSource.SourceType.GLTF2
                     )
-                        .setScale(0.5f)
+                        .setScale(0.25f)
                         .setRecenterMode(RenderableSource.RecenterMode.ROOT)
                         .build()
                 )

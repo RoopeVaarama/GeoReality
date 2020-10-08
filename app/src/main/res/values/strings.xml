@@ -65,5 +65,8 @@
     <string name="complete_cache">Complete cache!</string>
     <string name="distanceText">You are too far away! Less than %1$s meters till you can open the cache.</string>
     <string name="ar_fragment_counter">Score: %1$s</string>
+    <string name="cache_creation_title_warning">Title cannot be empty!</string>
+    <string name="cache_creation_audiofile_warning">You must record audio!</string>
+    <string name="cache_creation_2dtext_warning">Display text cannot be empty!</string>
 
 </resources>

@@ -49,4 +49,7 @@
     <string name="complete_cache">Suorita kätkö!</string>
     <string name="distanceText">Olet liian kaukana! Alle %1$s metriä niin voit avata kätkön.</string>
     <string name="ar_fragment_counter">Pisteet: %1$s</string>
+    <string name="cache_creation_title_warning">Otsikko ei voi olla tyhjä!</string>
+    <string name="cache_creation_audiofile_warning">Sinun pitää äänittää jotain!</string>
+    <string name="cache_creation_2dtext_warning">Tekstinäkymä ei voi olla tyhjä!</string>
 </resources>

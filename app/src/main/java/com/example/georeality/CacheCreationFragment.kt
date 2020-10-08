@@ -175,6 +175,8 @@ class CacheCreationFragment : Fragment() {
         //Check if title is empty
         Log.d("Validation", titleTextInput.text.toString())
         if (titleTextInput.text.toString() == "") {
+            Toast.makeText(requireContext(),
+                getString(R.string.cache_creation_title_warning), Toast.LENGTH_SHORT).show()
             return false
         }
         //Check if location is available
@@ -185,6 +187,8 @@ class CacheCreationFragment : Fragment() {
         //Check if type specific fields are empty
         if (switchIsOn) {
             return if (file == null) {
+                Toast.makeText(requireContext(),
+                    getString(R.string.cache_creation_audiofile_warning), Toast.LENGTH_SHORT).show()
                 Log.d("audio", "Audio must be recorded!")
                 false
             } else {
@@ -192,7 +196,8 @@ class CacheCreationFragment : Fragment() {
             }
         } else if (!switchIsOn) {
             return if (arTextInput.text.toString() == "" && spinner.selectedItem.toString() == getString(R.string.ar_type_2d)) {
-                Log.d("audio", "AR text cannot be empty!")
+                Toast.makeText(requireContext(),
+                    getString(R.string.cache_creation_2dtext_warning), Toast.LENGTH_SHORT).show()
                 false
             } else {
                 true
@@ -234,7 +239,7 @@ class CacheCreationFragment : Fragment() {
             val locationArray = location!!.split(",")
             val latitude = locationArray[0]
             val longitude = locationArray[1]
-            val displayText = titleTextInput.text.toString()
+            val displayText = arTextInput.text.toString()
 
             //AR is selected
             if (!switchIsOn) {

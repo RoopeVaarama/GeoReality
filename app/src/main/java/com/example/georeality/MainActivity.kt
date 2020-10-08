@@ -73,7 +73,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if(navController.currentDestination!!.id != R.id.mapFragment) {
             navController.navigate(R.id.mapFragment)
         }
-
     }
 
     private fun switchToUserCachesFragment() {
@@ -128,6 +127,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         navigation.setNavigationItemSelectedListener(this)
         navigation.menu.findItem(R.id.userEmail).title = user!!.email
+    }
+
+    override fun onBackPressed() {
+        when(navController.currentDestination?.id) {
+            R.id.arFragment -> {
+                navController.navigate(R.id.mapFragment)
+            }
+            R.id.audioListeningFragment -> {
+                navController.navigate(R.id.mapFragment)
+            }
+            else -> super.onBackPressed()
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
