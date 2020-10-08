@@ -47,4 +47,5 @@
     <string name="useremail">Käyttäjänsähköposti</string>
     <string name="email">Sähköposti</string>
     <string name="complete_cache">Suorita kätkö!</string>
+    <string name="distanceText">Olet liian kaukana! Alle %1$s metriä niin voit avata kätkön.</string>
 </resources>
