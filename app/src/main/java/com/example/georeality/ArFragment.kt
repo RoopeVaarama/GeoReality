@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.google.ar.core.Frame
 import com.google.ar.core.Plane
@@ -22,11 +25,14 @@ import com.google.ar.sceneform.rendering.ViewRenderable
 import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_ar.*
+import kotlinx.android.synthetic.main.fragment_audio_listening.*
 import kotlinx.android.synthetic.main.view_renderable_text.view.*
 
 /** ArFragment class
  */
 class ArFragment : Fragment() {
+    private lateinit var navController : NavController
     private val args : ArFragmentArgs by navArgs()
     private var modelRenderable1 : ModelRenderable? = null
     private var modelRenderable2 : ModelRenderable? = null
@@ -41,7 +47,7 @@ class ArFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_ar, container, false)
         fragment = childFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment
-
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
         //Get the argument in JSON and convert to data class ARMarker
         val arMarkerJson = args.arMarkerJson
         val gson = Gson()
@@ -60,6 +66,10 @@ class ArFragment : Fragment() {
          * 1. If 2D or 3D
          * 2. If 3D, check which model to display
          */
+        exitButtonAr.setOnClickListener{
+            arMarkerClass.ar_id?.let { Database.dbViewModel!!.deleteMarker(it,"ar") }
+            navController.navigate(R.id.mapFragment)
+        }
         if (arMarkerClass.type == getString(R.string.ar_type_2d)) {
             if (arMarkerClass.text != null) {
                 createViewRenderable(arMarkerClass.text!!)

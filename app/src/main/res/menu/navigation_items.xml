@@ -4,7 +4,7 @@
         <item
             android:id="@+id/userEmail"
             android:enabled="false"
-            android:title="" />
+            android:title="@string/email" />
     </group>
     <group android:id="@+id/fragmentMenu">
         <item android:title="@string/nav_menu_item_map"
