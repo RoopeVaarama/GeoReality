@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.string.app_name,
             R.string.app_name
         )
-        navigation.menu.findItem(R.id.useremail).title = user!!.email
+        navigation.menu.findItem(R.id.userEmail).title = user!!.email
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.syncState()
 
