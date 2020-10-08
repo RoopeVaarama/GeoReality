@@ -123,7 +123,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             } else {
                 marker.snippet = "Too far away!"
                 val distance = String.format("%.0f", dist-15)
-                Toast.makeText(requireContext(), "You are too far away! Less than $distance meters till you can open the cache", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.distanceText, distance), Toast.LENGTH_LONG).show()
                 marker.showInfoWindow()
                 Log.d("marker", "onclick")
                 Log.d("marker", "distance to marker: $dist meters")
