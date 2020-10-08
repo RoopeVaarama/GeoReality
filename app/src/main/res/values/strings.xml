@@ -25,7 +25,7 @@
     <string name="ar_text">Write text to be displayed in model</string>
     <string name="_2d_text" translatable="false">2D Text</string>
     <string name="info" translatable="false">Info</string>
-    <string name="audio_recording">Recording...</string>
+    <string name="audio_recording">Recording…</string>
     <string name="audio_play">Play audio</string>
     <string name="audio_new">New</string>
     <string name="audio_stop">Stop</string>
