@@ -12,7 +12,7 @@
             android:id="@+id/mapFragment"/>
 
         <item android:title="@string/nav_menu_item_cache"
-            android:icon="@drawable/ic_baseline_map_24"
+            android:icon="@drawable/ic_baseline_place_24"
             android:id="@+id/myCachesFragment"/>
 
         <item android:icon="@drawable/ic_baseline_info_24"

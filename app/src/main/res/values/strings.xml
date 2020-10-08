@@ -64,5 +64,6 @@
     <string name="email">email</string>
     <string name="complete_cache">Complete cache!</string>
     <string name="distanceText">You are too far away! Less than %1$s meters till you can open the cache.</string>
+    <string name="ar_fragment_counter">Score: %1$s</string>
 
 </resources>

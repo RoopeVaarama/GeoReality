@@ -30,17 +30,16 @@ import java.io.IOException
  */
 class AudioListeningFragment : Fragment() {
     private lateinit var navController : NavController
+    private lateinit var audioMarkerClass: AudioMarker
     private val args : AudioListeningFragmentArgs by navArgs()
     private var file : File? = null
     private var playing : Boolean = false
     private val audioRecorder = AudioRecorder()
-    private lateinit var audioMarkerClass: AudioMarker
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_audio_listening, container, false)
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
@@ -60,7 +59,6 @@ class AudioListeningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         exitButtonAudio.setOnClickListener{
-
             audioMarkerClass.audio_id?.let { Database.dbViewModel!!.deleteMarker(it,"audio") }
             navController.navigate(R.id.mapFragment)
         }
@@ -83,12 +81,13 @@ class AudioListeningFragment : Fragment() {
             try {
                 val inputStream = FileInputStream(file!!)
                 lifecycleScope.launch(Dispatchers.Main) {
-                    val time = async(Dispatchers.IO) { audioRecorder.playAudio(inputStream)}
-                    time.await()
-                    timer.stop()
-                    actionButton.text = getString(R.string.audio_play)
-                    playing = false
-                    timer.base = SystemClock.elapsedRealtime()
+                    val time = async(Dispatchers.IO) {
+                        audioRecorder.playAudio(inputStream)}
+                        time.await()
+                        timer.stop()
+                        actionButton.text = getString(R.string.audio_play)
+                        playing = false
+                        timer.base = SystemClock.elapsedRealtime()
                 }
 
             } catch (e: IOException) {

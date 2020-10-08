@@ -36,13 +36,16 @@ import kotlinx.android.synthetic.main.view_renderable_text.view.*
  */
 class ArFragment : Fragment() {
     private lateinit var navController : NavController
+    private lateinit var mContext : Context
+    private lateinit var arMarkerClass : ARMarker
+    private lateinit var fragment : ArFragment
     private val args : ArFragmentArgs by navArgs()
     private var modelRenderable1 : ModelRenderable? = null
     private var modelRenderable2 : ModelRenderable? = null
     private var viewRenderable : ViewRenderable? = null
-    private lateinit var mContext : Context
-    private lateinit var arMarkerClass : ARMarker
-    private lateinit var fragment : ArFragment
+    private var cacheCompleted : Boolean = false
+    private var nodeMaxAmount = 3
+    private var nodeCurrentAmount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +54,7 @@ class ArFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_ar, container, false)
         fragment = childFragmentManager.findFragmentById(R.id.sceneform_fragment) as ArFragment
         navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+
         //Get the argument in JSON and convert to data class ARMarker
         val arMarkerJson = args.arMarkerJson
         val gson = Gson()
@@ -63,22 +67,30 @@ class ArFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        exitButtonAr.setOnClickListener{
+            arMarkerClass.ar_id?.let { Database.dbViewModel!!.deleteMarker(it,"ar") }
+            navController.navigate(R.id.mapFragment)
+        }
+
+        // Configure button states for when cache is completed
+        changeButtonState()
+
         fragment.arSceneView.scene.addOnUpdateListener(this::onUpdateFrame)
         /**
          * Checking ARMarker class values
          * 1. If 2D or 3D
          * 2. If 3D, check which model to display
          */
-        exitButtonAr.setOnClickListener{
-            arMarkerClass.ar_id?.let { Database.dbViewModel!!.deleteMarker(it,"ar") }
-            navController.navigate(R.id.mapFragment)
-        }
         if (arMarkerClass.type == getString(R.string.ar_type_2d)) {
             if (arMarkerClass.text != null) {
                 createViewRenderable(arMarkerClass.text!!)
+                scoreCounter.visibility = View.GONE
             }
         }
         else if (arMarkerClass.type == getString(R.string.ar_type_3d)) {
+            scoreCounter.visibility = View.VISIBLE
+            scoreCounter.text = getString(R.string.ar_fragment_counter, "0")
             if (arMarkerClass.model_type != null) {
                 createModelRenderables(arMarkerClass.model_type!!)
             }
@@ -87,12 +99,11 @@ class ArFragment : Fragment() {
             if (arMarkerClass.model_type == getString(R.string.cache_model_duck)) {
                 createModelRenderables(getString(R.string.cache_model_duck))
             }
-            //Model is avocado
+            //Model is avocadosa
             else if (arMarkerClass.model_type == getString(R.string.cache_model_avocado)) {
                 createModelRenderables(getString(R.string.cache_model_avocado))
             }
         }
-
     }
 
     /**
@@ -124,7 +135,7 @@ class ArFragment : Fragment() {
 
                         // Iterate through all hits
                         val hitTestIterator = hitTest.iterator()
-                        if(hitTestIterator.hasNext() ) {
+                        while(hitTestIterator.hasNext() && nodeCurrentAmount < nodeMaxAmount) {
                             val hitResult = hitTestIterator.next()
 
                             // Create an anchor at the plane hit
@@ -140,13 +151,33 @@ class ArFragment : Fragment() {
                             when {
                                 arMarkerClass.model_type == getString(R.string.cache_model_duck) -> {
                                     transformableNode.renderable = this@ArFragment.modelRenderable1
+                                    transformableNode.setOnTapListener { hitTestResult, _ ->
+                                        val nodeToRemove = hitTestResult.node
+                                        anchorNode.removeChild(nodeToRemove)
+                                        nodeCurrentAmount += 1
+                                        scoreCounter.text = getString(R.string.ar_fragment_counter, nodeCurrentAmount.toString())
+                                        if (nodeCurrentAmount == nodeMaxAmount) {
+                                            cacheCompleted = true
+                                            changeButtonState()
+                                        }
+                                    }
                                 }
                                 arMarkerClass.model_type == getString(R.string.cache_model_avocado) -> {
                                     transformableNode.renderable = this@ArFragment.modelRenderable2
-
+                                    transformableNode.setOnTapListener { hitTestResult, _ ->
+                                        val nodeToRemove = hitTestResult.node
+                                        anchorNode.removeChild(nodeToRemove)
+                                        nodeCurrentAmount += 1
+                                        scoreCounter.text = getString(R.string.ar_fragment_counter, nodeCurrentAmount.toString())
+                                        if (nodeCurrentAmount == nodeMaxAmount) {
+                                            cacheCompleted = true
+                                            changeButtonState()
+                                        }
+                                    }
                                 }
                                 arMarkerClass.type == getString(R.string.ar_type_2d) -> {
                                     transformableNode.renderable = this@ArFragment.viewRenderable
+                                    changeButtonState()
                                 }
                             }
 
@@ -158,6 +189,14 @@ class ArFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun changeButtonState() {
+        if (!cacheCompleted) {
+            exitButtonAr.visibility = View.GONE
+        } else {
+            exitButtonAr.visibility = View.VISIBLE
         }
     }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="burger_menu_title">Avaa menu</string>
+    <string name="burger_menu_title">Avaa valikko</string>
     <string name="nav_menu_item_map">Kartta</string>
     <string name="nav_menu_item_cache">Minun kätköt</string>
     <string name="nav_menu_item_create_cache">Luo uusi kätkö</string>
@@ -23,7 +23,7 @@
     <string name="audio_recording">Nauhoitetaan…</string>
     <string name="audio_play">Toista</string>
     <string name="audio_new">Uusi</string>
-    <string name="audio_stop">Lopeta</string>
+    <string name="audio_stop">Pysäytä</string>
     <string name="log_out">Kirjaudu ulos</string>
     <string name="cache_entity_button">Avaa kätkö</string>
     <string name="map_info_window_open_ar">Avaa kätkö</string>
@@ -38,7 +38,7 @@
     <string name="info_fragment_red_desc">d</string>
     <string name="info_fragment_blue_desc">d</string>
     <string name="info_fragment_infowindow_desc">d</string>
-    <string name="info_fragment_title">Info</string>
+    <string name="info_fragment_title">Tiedote</string>
     <string name="mycaches_title">Minun kätköni</string>
     <string name="label_myCaches">Minun kätköni</string>
     <string name="label_cache_creation">Luo kätkö!</string>
@@ -48,4 +48,5 @@
     <string name="email">Sähköposti</string>
     <string name="complete_cache">Suorita kätkö!</string>
     <string name="distanceText">Olet liian kaukana! Alle %1$s metriä niin voit avata kätkön.</string>
+    <string name="ar_fragment_counter">Pisteet: %1$s</string>
 </resources>
