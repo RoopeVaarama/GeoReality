@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mapFragment_to_audioListeningFragment"
             app:destination="@id/audioListeningFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_infoFragment"
+            app:destination="@id/infoFragment" />
     </fragment>
     <fragment
         android:id="@+id/cacheCreationFragment"
@@ -38,9 +41,6 @@
         android:label="@string/label_myCaches"
         tools:layout="@layout/fragment_my_caches" >
         <action
-            android:id="@+id/action_myCachesFragment_to_infoFragment"
-            app:destination="@id/infoFragment" />
-        <action
             android:id="@+id/action_myCachesFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
     </fragment>
@@ -50,8 +50,8 @@
         android:label="@string/label_info"
         tools:layout="@layout/fragment_info" >
         <action
-            android:id="@+id/action_infoFragment_to_myCachesFragment"
-            app:destination="@id/myCachesFragment" />
+            android:id="@+id/action_infoFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/arFragment"
@@ -61,6 +61,9 @@
         <argument
             android:name="arMarkerJson"
             app:argType="string" />
+        <action
+            android:id="@+id/action_arFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/audioListeningFragment"
@@ -70,6 +73,9 @@
         <argument
             android:name="audioMarkerJson"
             app:argType="string" />
+        <action
+            android:id="@+id/action_audioListeningFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
 
 </navigation>
