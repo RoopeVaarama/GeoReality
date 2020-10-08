@@ -42,4 +42,5 @@
     <string name="mycaches_title">Minun kätköni</string>
     <string name="useremail">Käyttäjänsähköposti</string>
     <string name="email">Sähköposti</string>
+    <string name="exit_cache">Exit Cache</string>
 </resources>

@@ -57,5 +57,6 @@
     <string name="mycaches_title">My caches</string>
     <string name="useremail">UserEmail</string>
     <string name="email">email</string>
+    <string name="exit_cache">Exit Cache</string>
 
 </resources>

@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_audio_listening.*
@@ -22,10 +24,12 @@ import java.io.IOException
  * Includes only one functionality, which is playing an audio file
  */
 class AudioListeningFragment : Fragment() {
+    private lateinit var navController : NavController
     private val args : AudioListeningFragmentArgs by navArgs()
     private var file : File? = null
     private var playing : Boolean = false
     private val audioRecorder = AudioRecorder()
+    private lateinit var audioMarkerClass: AudioMarker
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,11 +37,12 @@ class AudioListeningFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_audio_listening, container, false)
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
         //Get argument in JSON and convert it to a data class AudioMarker
         val audioMarkerJson = args.audioMarkerJson
         val gson = Gson()
-        val audioMarkerClass = gson.fromJson(audioMarkerJson, AudioMarker::class.java)
+        audioMarkerClass = gson.fromJson(audioMarkerJson, AudioMarker::class.java)
 
         //Get file from AudioMarker class ID
         val audioMarkerID = audioMarkerClass.audio_id
@@ -48,6 +53,12 @@ class AudioListeningFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        exitButtonAudio.setOnClickListener{
+
+            audioMarkerClass.audio_id?.let { Database.dbViewModel!!.deleteMarker(it,"audio") }
+            navController.navigate(R.id.mapFragment)
+        }
 
         actionButton.setOnClickListener {
             if (!playing) {
