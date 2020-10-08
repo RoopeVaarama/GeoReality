@@ -62,6 +62,6 @@
     <string name="label_ar_cache">AR cache</string>
     <string name="useremail">UserEmail</string>
     <string name="email">email</string>
-    <string name="exit_cache">Exit Cache</string>
+    <string name="complete_cache">Complete cache!</string>
 
 </resources>

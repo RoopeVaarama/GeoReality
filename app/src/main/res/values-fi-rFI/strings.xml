@@ -46,5 +46,5 @@
     <string name="label_ar_cache">AR-kätkö</string>
     <string name="useremail">Käyttäjänsähköposti</string>
     <string name="email">Sähköposti</string>
-    <string name="exit_cache">Exit Cache</string>
+    <string name="complete_cache">Suorita kätkö!</string>
 </resources>
