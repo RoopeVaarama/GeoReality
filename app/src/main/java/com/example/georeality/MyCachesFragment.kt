@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -46,6 +47,10 @@ class MyCachesFragment : Fragment() {
         viewAdapter = RecyclerViewAdapter(markerList, requireContext())
         deleteIcon = ContextCompat.getDrawable(requireActivity().baseContext, R.drawable.ic_delete)!!
         colorDrawableBackground = ColorDrawable(Color.parseColor("#ff0000"))
+
+        val callBack = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Log.d("OnBackPressedCallback", "pressed")
+        }
 
         recyclerView = view.findViewById<RecyclerView>(R.id.my_caches_recyclerView).apply {
             setHasFixedSize(true)

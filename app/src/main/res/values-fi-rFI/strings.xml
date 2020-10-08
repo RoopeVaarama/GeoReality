@@ -40,4 +40,8 @@
     <string name="info_fragment_infowindow_desc">d</string>
     <string name="info_fragment_title">Info</string>
     <string name="mycaches_title">Minun kätköni</string>
+    <string name="label_myCaches">Minun kätköni</string>
+    <string name="label_cache_creation">Luo kätkö!</string>
+    <string name="label_audio_cache">Äänikätkö</string>
+    <string name="label_ar_cache">AR-kätkö</string>
 </resources>

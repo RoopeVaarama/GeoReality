@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -53,7 +54,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         val view = inflater.inflate(R.layout.fragment_map, container, false)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity().applicationContext)
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
+
         val mapFragment =
             childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)

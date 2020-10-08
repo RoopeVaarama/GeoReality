@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:id="@+id/menu">
+    <group android:id="@+id/emailMenu">
+        <item
+            android:id="@+id/userEmail"
+            android:enabled="false"
+            android:title="" />
+    </group>
+    <group android:id="@+id/fragmentMenu">
         <item android:title="@string/nav_menu_item_map"
-            android:icon="@drawable/ic_baseline_map_24"/>
+            android:icon="@drawable/ic_baseline_map_24"
+            android:id="@+id/mapFragment"/>
 
         <item android:title="@string/nav_menu_item_cache"
-            android:icon="@drawable/ic_baseline_map_24"/>
+            android:icon="@drawable/ic_baseline_map_24"
+            android:id="@+id/myCachesFragment"/>
 
         <item android:icon="@drawable/ic_baseline_info_24"
-            android:title="@string/nav_menu_item_info" />
+            android:title="@string/nav_menu_item_info"
+            android:id="@+id/infoFragment"/>
     </group>
-    <group>
+    <group android:id="@+id/logoutMenu">
         <item android:icon="@drawable/ic_baseline_exit_to_app_24"
-            android:title="@string/nav_menu_item_logout"/>
+            android:title="@string/nav_menu_item_logout"
+            android:id="@+id/logoutItem"/>
     </group>
 </menu>
