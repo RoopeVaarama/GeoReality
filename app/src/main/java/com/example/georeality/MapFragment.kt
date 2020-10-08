@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
@@ -121,6 +122,8 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 marker.showInfoWindow()
             } else {
                 marker.snippet = "Too far away!"
+                val distance = String.format("%.0f", dist-15)
+                Toast.makeText(requireContext(), "You are too far away! ${distance} meters till you can open the cache", Toast.LENGTH_LONG).show()
                 marker.showInfoWindow()
                 Log.d("marker", "onclick")
                 Log.d("marker", "distance to marker: $dist meters")
