@@ -21,6 +21,11 @@ import java.io.FileInputStream
 import java.io.IOException
 
 /**
+ * @author Topias Peiponen
+ * @Since 05.10.2020
+ */
+
+/**
  * Includes only one functionality, which is playing an audio file
  */
 class AudioListeningFragment : Fragment() {

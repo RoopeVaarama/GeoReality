@@ -12,6 +12,11 @@ import java.lang.Exception
 import java.time.LocalTime
 
 /**
+ * @author Topias Peiponen
+ * @Since 01.10.2020
+ */
+
+/**
  * AudioRecorder class contains control functions for recording and playing audio
  */
 class AudioRecorder {
@@ -104,6 +109,7 @@ class AudioRecorder {
         track.setVolume(0.2f)
         val startTime= LocalTime.now().toString()
         track.play()
+        // Initializing i is mandatory, ignore warning
         var i = 0
         val buffer= ByteArray(minBufferSize)
         try{

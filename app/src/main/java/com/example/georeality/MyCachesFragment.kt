@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -48,10 +47,6 @@ class MyCachesFragment : Fragment() {
         deleteIcon = ContextCompat.getDrawable(requireActivity().baseContext, R.drawable.ic_delete)!!
         colorDrawableBackground = ColorDrawable(Color.parseColor("#ff0000"))
 
-        val callBack = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            Log.d("OnBackPressedCallback", "pressed")
-        }
-
         recyclerView = view.findViewById<RecyclerView>(R.id.my_caches_recyclerView).apply {
             setHasFixedSize(true)
             adapter = viewAdapter
@@ -60,7 +55,6 @@ class MyCachesFragment : Fragment() {
         }
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
 
-            //onMove function
             override fun onMove(
                 p0: RecyclerView,
                 p1: RecyclerView.ViewHolder,
@@ -69,14 +63,13 @@ class MyCachesFragment : Fragment() {
                 return false
             }
 
-            //onSwipe function
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, position: Int) {
                 (viewAdapter as RecyclerViewAdapter).removeItem(
                     viewHolder.adapterPosition,
                     viewHolder
                 )
             }
-            //onChildDraw function
+
             override fun onChildDraw(
                 c: Canvas,
                 recyclerView: RecyclerView,
@@ -121,6 +114,7 @@ class MyCachesFragment : Fragment() {
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
         user = FirebaseAuth.getInstance().currentUser
+
         //Setup marker observers
         Database.dbViewModel!!.audioMarkers.observe(viewLifecycleOwner, {
             for (i in it.indices) {
@@ -141,7 +135,6 @@ class MyCachesFragment : Fragment() {
             Log.d("ARLIST", arMarkersList.toString())
         })
 
-        // Inflate the layout for this fragment
         return view
     }
 }
@@ -181,7 +174,7 @@ class RecyclerViewAdapter(private val markerList : MutableList<Any>, private val
     }
 
     /**
-     * Function to remove your own item from the recyclerview and database
+     * Removes your own item from the recyclerview and database. Has undo functionality.
      */
     fun removeItem(position: Int, viewHolder: RecyclerView.ViewHolder) {
         removedItem = markerList[position]

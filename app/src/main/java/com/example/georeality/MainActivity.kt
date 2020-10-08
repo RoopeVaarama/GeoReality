@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -36,7 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var mAuth: FirebaseAuth
     private lateinit var providers: List<AuthUI.IdpConfig>
     private var user: FirebaseUser? = null
-    private val REQUEST_CODE = 1
+    private val requestCode = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,7 +100,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .setAvailableProviders(providers)
                 .setTheme(R.style.LoginTheme)
                 .build(),
-            REQUEST_CODE
+            requestCode
         )
     }
 

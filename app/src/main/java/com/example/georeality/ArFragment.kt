@@ -8,11 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.google.ar.core.Frame
 import com.google.ar.core.Plane
 import com.google.ar.core.Pose
 import com.google.ar.core.TrackingState
@@ -26,10 +24,15 @@ import com.google.ar.sceneform.ux.ArFragment
 import com.google.ar.sceneform.ux.TransformableNode
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_ar.*
-import kotlinx.android.synthetic.main.fragment_audio_listening.*
 import kotlinx.android.synthetic.main.view_renderable_text.view.*
 
-/** ArFragment class
+/**
+ * @author Topias Peiponen, Roope Vaarama
+ * @Since 05.10.2020
+ */
+
+/**
+ * Fragment for viewing both 2D and 3D AR caches.
  */
 class ArFragment : Fragment() {
     private lateinit var navController : NavController
@@ -93,45 +96,45 @@ class ArFragment : Fragment() {
     }
 
     /**
-     * onUpdateFrame function to create ar renderable after the plane ground has been detected
+     * Creates AR objects after the plane ground has been detected
      */
     private fun onUpdateFrame(frameTime: FrameTime?) {
-        //get the frame from the scene for shorthand
+        // Get the frame from the scene for shorthand
         val frame = fragment.arSceneView.arFrame
         if (frame != null) {
-            //get the trackables to ensure planes are detected
+            // Get the trackables to ensure planes are detected
             val var3 = frame.getUpdatedTrackables(Plane::class.java).iterator()
             if(var3.hasNext()) {
                 val plane = var3.next() as Plane
 
-                //If a plane has been detected & is being tracked by ARCore
+                // If a plane has been detected & is being tracked by ARCore
                 if (plane.trackingState == TrackingState.TRACKING) {
 
-                    //Hide the plane discovery helper animation
+                    // Hide the plane discovery helper animation
                     fragment.planeDiscoveryController.hide()
 
 
-                    //Get all added anchors to the frame
+                    // Get all added anchors to the frame
                     val iterableAnchor = frame.updatedAnchors.iterator()
 
-                    //place the first object only if no previous anchors were added
+                    // Place the first object only if no previous anchors were added
                     if(!iterableAnchor.hasNext()) {
-                        //Perform a hit test at the center of the screen to place an object without tapping
-                        val hitTest = frame.hitTest(frame.screenCenter().x, frame.screenCenter().y)
+                        // Perform a hit test at the center of the screen to place an object without tapping
+                        val hitTest = frame.hitTest(screenCenter().x, screenCenter().y)
 
-                        //iterate through all hits
+                        // Iterate through all hits
                         val hitTestIterator = hitTest.iterator()
                         if(hitTestIterator.hasNext() ) {
                             val hitResult = hitTestIterator.next()
 
-                            //Create an anchor at the plane hit
+                            // Create an anchor at the plane hit
                             val modelAnchor = plane.createAnchor(hitResult.hitPose)
 
-                            //Attach a node to this anchor with the scene as the parent
+                            // Attach a node to this anchor with the scene as the parent
                             val anchorNode = AnchorNode(modelAnchor)
                             anchorNode.setParent(fragment.arSceneView.scene)
 
-                            //create a new TransformableNode that will carry our object
+                            // Create a new TransformableNode that will carry our object
                             val transformableNode = TransformableNode(fragment.transformationSystem)
                             transformableNode.setParent(anchorNode)
                             when {
@@ -147,7 +150,7 @@ class ArFragment : Fragment() {
                                 }
                             }
 
-                            //Alter the real world position to ensure object renders on the table top. Not somewhere inside.
+                            // Alter the real world position to ensure object renders on the table top. Not somewhere inside.
                             transformableNode.worldPosition = Vector3(modelAnchor.pose.tx(),
                                 modelAnchor.pose.compose(Pose.makeTranslation(0f, 0.05f, 0f)).ty(),
                                 modelAnchor.pose.tz())
@@ -158,9 +161,10 @@ class ArFragment : Fragment() {
         }
     }
 
-    /** A method to find the screen center. This is used while placing objects in the scene
+    /**
+     * Finds the screen center. This is used while placing objects in the scene
      */
-    private fun Frame.screenCenter(): Vector3 {
+    private fun screenCenter(): Vector3 {
         val vw = view?.findViewById<View>(R.id.sceneform_fragment)
         return Vector3(vw?.width!! / 2f, vw.height / 2f, 0f)
     }
@@ -178,7 +182,7 @@ class ArFragment : Fragment() {
     }
 
     /**
-     * Creates models that are displayed in AR mode
+     * Creates 3D models that are displayed in AR mode
      */
     private fun createModelRenderables(modelType : String) {
         val modelMap = createModelMap()

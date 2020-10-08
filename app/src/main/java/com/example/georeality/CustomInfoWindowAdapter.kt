@@ -9,6 +9,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 
 /**
+ * @author Topias Peiponen
+ * @Since 05.10.2020
+ */
+
+/**
  * InfoWindow adapter. Replaces default Google Maps marker info window with a customized one.
  */
 class CustomInfoWindowAdapter(context: Context) : GoogleMap.InfoWindowAdapter {

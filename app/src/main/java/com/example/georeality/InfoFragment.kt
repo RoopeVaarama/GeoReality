@@ -13,20 +13,17 @@ import kotlinx.android.synthetic.main.fragment_info.*
  */
 
 class InfoFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)}
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_info, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Set images
         info_fragment_red_img.setImageResource(R.drawable.google_maps_marker_red)
         info_fragment_blue_img.setImageResource(R.drawable.google_maps_marker_blue)
         info_fragment_infowindow_img.setImageResource(R.drawable.georeality_infowindow_example)
