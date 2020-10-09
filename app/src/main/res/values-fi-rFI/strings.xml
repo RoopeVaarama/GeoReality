@@ -34,10 +34,10 @@
     <string name="cache_model_duck">Ankka</string>
     <string name="cache_model_avocado">Avokaado</string>
     <string name="coordinate_string">Leveys: %1s, korkeus: %2s</string>
-    <string name="info_fragment_preview">d</string>
-    <string name="info_fragment_red_desc">d</string>
-    <string name="info_fragment_blue_desc">d</string>
-    <string name="info_fragment_infowindow_desc">d</string>
+    <string name="info_fragment_preview">Tervetuloa GeoRealityyn! Appin pääominaisuus on kartta. Kartta jäljittää jatkuvasti sijaintiasti, jotta et eksyisi! Tavoitteena on löytää kätköjä. Kätköt näkyvät kartassa punasina ja sinisinä merkkeinä.</string>
+    <string name="info_fragment_red_desc">Punainen merkki on AR-merkki. Se sisältää kätkön, jolla on \"alternate reality\" ominaisuuksia.</string>
+    <string name="info_fragment_blue_desc">Sininen merkki on äänimerkki. Se sisältää kätkön, jossa on äänite, jonka toinen henkilö on nauhoittanut.</string>
+    <string name="info_fragment_infowindow_desc">Merkkiä klikkaamalla avaat info ikkunan merkistä. Ikkuna kertoo oletko tarpeeksi lähellä merkkiä, jotta voisit avata sen. Klikkaamalla tarpeeksi lähellä olevaa kätköä voit avata sen.</string>
     <string name="info_fragment_title">Tiedote</string>
     <string name="mycaches_title">Minun kätköni</string>
     <string name="label_myCaches">Minun kätköni</string>
