@@ -35,7 +35,7 @@ git clone https://github.com/RoopeVaarama/GeoReality.git
 ### GeoReality implemented the following concepts:
 
 - GPS sensors
-- Activity component
+- Activity component, navigation component
 - Fragments
 - File persistence along with Firebase database
 - Connection to Google Maps API and Firebase
